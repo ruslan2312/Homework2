@@ -30,26 +30,26 @@ export const PostsRepository = {
         }
         return false
     },
-    updatePost(id: number, title: string, shortDescription: string, content: string, postId: number, bloggerName: string) {
+    updatePost(id: number, title: string, shortDescription: string, content: string, bloggerId: number, bloggerName: string) {
         let post = posts.find(p => p.id === +id)
         if (post) {
             post.title = title
             post.shortDescription = shortDescription
             post.content = content
-            post.bloggerId = postId
+            post.bloggerId = bloggerId
             post.bloggerName = bloggerName
             return true
         } else {
             return false
         }
     },
-    createPost(title: string, shortDescription: string, content: string, bloggerName: string) {
+    createPost(title: string, shortDescription: string, content: string, bloggerId: number, bloggerName: string) {
         const newPost: postsType = {
             id: +(new Date()),
             title: title,
             shortDescription: shortDescription,
             content: content,
-            bloggerId: +(new Date()),
+            bloggerId: bloggerId,
             bloggerName: bloggerName
 
         }

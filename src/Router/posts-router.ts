@@ -8,7 +8,7 @@ export const PostsRouter = Router()
 const titleValidation = body('title').trim().isLength({min: 1, max: 30})
 const shortDescriptionValidation = body('shortDescription').trim().isLength({min: 1, max: 100})
 const contentValidation = body('content').trim().isLength({min: 1, max: 1000})
-const bloggerIdValidation = body('bloggerId').isNumeric().isLength({min: 1, max: 150})
+const bloggerIdValidation = body('bloggerId').isInt({min:0,max:50})
 const bloggerNameValidation = body('bloggerName').trim().isLength({min: 1, max: 30}).optional()
 
 
@@ -49,7 +49,7 @@ PostsRouter.put('/:id', titleValidation, shortDescriptionValidation, contentVali
 
 PostsRouter.post('/', titleValidation, shortDescriptionValidation, contentValidation,
     bloggerIdValidation, bloggerNameValidation, inputValidationMiddleware, (req: Request, res: Response) => {
-        const newPost = PostsRepository.createPost(req.body.title, req.body.shortDescription, req.body.content, req.body.bloggerName)
+        const newPost = PostsRepository.createPost(req.body.title, req.body.shortDescription, req.body.content, req.body.bloggerId, req.body.bloggerName)
         res.status(201).send(newPost)
     })
 
