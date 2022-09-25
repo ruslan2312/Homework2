@@ -5,7 +5,6 @@ export type postsType = {
     content: string,
     bloggerId: number,
     bloggerName: string
-
 }
 
 const posts: postsType [] = [];
@@ -31,13 +30,13 @@ export const PostsRepository = {
         }
         return false
     },
-    updatePost(id: number, title: string, shortDescription: string, content: string, bloggerId: number, bloggerName: string) {
+    updatePost(id: number, title: string, shortDescription: string, content: string, postId: number, bloggerName: string) {
         let post = posts.find(p => p.id === +id)
         if (post) {
             post.title = title
             post.shortDescription = shortDescription
             post.content = content
-            post.bloggerId = bloggerId
+            post.bloggerId = postId
             post.bloggerName = bloggerName
             return true
         } else {
