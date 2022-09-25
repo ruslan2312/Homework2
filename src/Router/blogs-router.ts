@@ -14,7 +14,7 @@ BlogsRouter.get('/', (req: Request, res: Response) => {
 })
 BlogsRouter.get('/:id',
     (req: Request, res: Response) => {
-        let video = BlogsRepository.findBlogByID(req.params.id)
+        let video = BlogsRepository.findBlogByID(+req.params.id)
         if (video) {
             res.status(200).send(video)
         } else {
@@ -22,7 +22,7 @@ BlogsRouter.get('/:id',
         }
     })
 BlogsRouter.delete('/:id', (req: Request, res: Response) => {
-    const deleteBlog = BlogsRepository.deleteBlog(req.params.id)
+    const deleteBlog = BlogsRepository.deleteBlog(+req.params.id)
     if (deleteBlog) {
         res.send(204)
     } else {
@@ -31,9 +31,9 @@ BlogsRouter.delete('/:id', (req: Request, res: Response) => {
 })
 
 BlogsRouter.put('/:id', nameValidation, youtubeUrlValidation, inputValidationMiddleware, (req: Request, res: Response) => {
-    const isUpdate = BlogsRepository.updateBlog(req.params.id, req.body.name, req.body.youtubeUrl)
+    const isUpdate = BlogsRepository.updateBlog(+req.params.id, req.body.name, req.body.youtubeUrl)
     if (isUpdate) {
-        const blog = BlogsRepository.findBlogByID(req.params.id)
+        const blog = BlogsRepository.findBlogByID(+req.params.id)
         res.status(204).send(blog)
     } else {
         res.send(404)

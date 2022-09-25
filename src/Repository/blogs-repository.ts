@@ -1,5 +1,5 @@
 export type blogsType = {
-    id: string,
+    id: number,
     name: string,
     youtubeUrl: string
 }
@@ -15,20 +15,20 @@ export const BlogsRepository = {
             return blogs
         }
     },
-    findBlogByID(id: string) {
-        return blogs.find(p => p.id === id)
+    findBlogByID(id: number) {
+        return blogs.find(p => p.id === +id)
     },
-    deleteBlog(id: string) {
+    deleteBlog(id: number) {
         for (let i = 0; i < blogs.length; i++) {
-            if (blogs[i].id === id) {
+            if (blogs[i].id === +id) {
                 blogs.splice(i, 1)
                 return true
             }
         }
         return false
     },
-    updateBlog(id: string, name: string, youtubeUrl: string) {
-        let blog = blogs.find(p => p.id === id)
+    updateBlog(id: number, name: string, youtubeUrl: string) {
+        let blog = blogs.find(p => p.id === +id)
         if (blog) {
             blog.name = name
             blog.youtubeUrl = youtubeUrl
@@ -39,7 +39,7 @@ export const BlogsRepository = {
     },
     createBlog(name: string, youtubeUrl: string) {
         const newBlog: blogsType = {
-            id: new Date().toISOString(),
+            id: +(new Date()),
             name: name,
             youtubeUrl: youtubeUrl
         }
