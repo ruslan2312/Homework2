@@ -10,7 +10,7 @@ export const PostsRouter = Router()
 const titleValidation = body('title').trim().isLength({min: 1, max: 30})
 const shortDescriptionValidation = body('shortDescription').trim().isLength({min: 1, max: 100})
 const contentValidation = body('content').trim().isLength({min: 1, max: 1000})
-const bloggerIdValidation = body('bloggerId').isNumeric()
+const bloggerIdValidation = body('bloggerId').isNumeric().withMessage(`it's not number`)
 const bloggerNameValidation = body('bloggerName').trim().isLength({min: 1, max: 30}).optional()
 
 
