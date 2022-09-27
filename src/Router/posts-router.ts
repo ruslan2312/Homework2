@@ -38,8 +38,7 @@ PostsRouter.delete('/:id', mwBasicAuth, (req: Request, res: Response) => {
 PostsRouter.put('/:id', mwBasicAuth, titleValidation, shortDescriptionValidation, contentValidation,
     bloggerIdValidation, bloggerNameValidation, inputValidationMiddleware, (req: Request, res: Response) => {
 
-        const isUpdate = PostsRepository.updatePost(+req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.bloggerId
-        )
+        const isUpdate = PostsRepository.updatePost(+req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.bloggerId)
         if (isUpdate) {
             const post = PostsRepository.findPostByID(+req.params.id)
             res.status(204).send(post)
