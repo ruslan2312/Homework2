@@ -3,8 +3,6 @@ import {body} from 'express-validator';
 import {inputValidationMiddleware} from "../Middleware/input-validation-middleware";
 import {mwBasicAuth} from "../Middleware/authorization-middleware";
 import {PostsRepository} from "../Repository/posts-Repository";
-import {BlogsRepository} from "../Repository/blogs-repository";
-
 
 export const PostsRouter = Router()
 
@@ -54,11 +52,7 @@ PostsRouter.put('/:id', mwBasicAuth, titleValidation, shortDescriptionValidation
 PostsRouter.post('/', mwBasicAuth, titleValidation, shortDescriptionValidation, contentValidation,
     bloggerIdValidation, bloggerNameValidation, inputValidationMiddleware, (req: Request, res: Response) => {
 
-
-     const bloggerName = BlogsRepository?.findBlogByID(+req.params.id)?.name.toString()
-
-
-        const newPost = PostsRepository.createPost(req.body.title, req.body.shortDescription, req.body.content, req.body.bloggerId, bloggerName)
+        const newPost = PostsRepository.createPost(req.body.title, req.body.shortDescription, req.body.content, req.body.bloggerId,)
         res.status(201).send(newPost);
 
     })

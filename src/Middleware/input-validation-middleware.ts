@@ -1,8 +1,6 @@
 import {Request, Response, NextFunction} from "express";
 import { validationResult} from "express-validator";
 
-
-
 export const inputValidationMiddleware = (req: Request<{}, { bloggerId: number }>, res: Response, next: NextFunction) => {
     const errors = validationResult(req)
     const customErrors = []

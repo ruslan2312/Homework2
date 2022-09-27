@@ -4,7 +4,7 @@ export type blogsType = {
     youtubeUrl: string
 }
 
-const blogs: blogsType [] = [];
+export const blogs: blogsType [] = [];
 
 
 export const BlogsRepository = {

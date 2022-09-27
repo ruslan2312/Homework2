@@ -1,10 +1,12 @@
+import {blogs} from "./blogs-repository";
+
 export type postsType = {
     id: number,
     title: string,
     shortDescription: string,
     content: string,
     bloggerId: number,
-    bloggerName: string | undefined
+    bloggerName: string
 }
 
 const posts: postsType [] = [];
@@ -43,17 +45,22 @@ export const PostsRepository = {
             return false
         }
     },
-    createPost(title: string, shortDescription: string, content: string, bloggerId: number, bloggerName: string|undefined) {
-        const newPost: postsType = {
-            id: +(new Date()),
-            title: title,
-            shortDescription: shortDescription,
-            content: content,
-            bloggerId: bloggerId ,
-            bloggerName: bloggerName
+    createPost(title: string, shortDescription: string, content: string, bloggerId: number) {
 
+        const blogger = blogs.find((e) => e.id === bloggerId)
+        console.log(blogger)
+        if (blogger) {
+            const newPost: postsType = {
+                id: +(new Date()),
+                title: title,
+                shortDescription: shortDescription,
+                content: content,
+                bloggerId: bloggerId,
+                bloggerName: blogger.name
+            }
+            posts.push(newPost)
+            return newPost
         }
-        posts.push(newPost)
-        return newPost
+        return null
     }
 }
