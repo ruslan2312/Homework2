@@ -32,12 +32,11 @@ export const PostsRepository = {
         }
         return false
     },
-    updatePost(id: number, title: string, shortDescription: string, content: string, bloggerId: number, bloggerName: string) {
+    updatePost(id: number, title: string, shortDescription: string, content: string, bloggerId: number) {
         let post = posts.find(p => p.id === +id)
         const blogger = blogs.find((e) => e.id === bloggerId)
         if (post && blogger) {
-            posts[id] = {id, title, shortDescription, content, bloggerId, bloggerName}
-            blogs[bloggerId] = {id: bloggerId, name: bloggerName, youtubeUrl: blogger.youtubeUrl}
+            posts[id] = {id, title, shortDescription, content, bloggerId, bloggerName: blogger.name}
             return true
         } else {
             return false
