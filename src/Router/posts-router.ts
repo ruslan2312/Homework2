@@ -1,7 +1,9 @@
 import {Request, Response, Router} from "express";
 import {body} from 'express-validator';
 import {inputValidationMiddleware} from "../Middleware/input-validation-middleware";
+import {mwBasicAuth} from "../Middleware/authorization-middleware";
 import {PostsRepository} from "../Repository/posts-Repository";
+
 
 export const PostsRouter = Router()
 
@@ -25,7 +27,7 @@ PostsRouter.get('/:id',
             res.send(404)
         }
     })
-PostsRouter.delete('/:id', (req: Request, res: Response) => {
+PostsRouter.delete('/:id', mwBasicAuth, (req: Request, res: Response) => {
     const deletePost = PostsRepository.deletePost(+req.params.id)
     if (deletePost) {
         res.send(204)
@@ -34,8 +36,9 @@ PostsRouter.delete('/:id', (req: Request, res: Response) => {
     }
 })
 
-PostsRouter.put('/:id', titleValidation, shortDescriptionValidation, contentValidation,
+PostsRouter.put('/:id', mwBasicAuth, titleValidation, shortDescriptionValidation, contentValidation,
     bloggerIdValidation, bloggerNameValidation, inputValidationMiddleware, (req: Request, res: Response) => {
+
         const isUpdate = PostsRepository.updatePost(+req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.bloggerId,
             req.body.bloggerName
         )
@@ -47,10 +50,11 @@ PostsRouter.put('/:id', titleValidation, shortDescriptionValidation, contentVali
         }
     })
 
-PostsRouter.post('/', titleValidation, shortDescriptionValidation, contentValidation,
+PostsRouter.post('/', mwBasicAuth, titleValidation, shortDescriptionValidation, contentValidation,
     bloggerIdValidation, bloggerNameValidation, inputValidationMiddleware, (req: Request, res: Response) => {
         const newPost = PostsRepository.createPost(req.body.title, req.body.shortDescription, req.body.content, req.body.bloggerId, req.body.bloggerName)
-        res.status(201).send(newPost)
+        res.status(201).send(newPost);
+
     })
 
 

@@ -1,6 +1,7 @@
 import {Request, Response, Router} from "express";
 import {body} from 'express-validator';
 import {inputValidationMiddleware} from "../Middleware/input-validation-middleware";
+import {mwBasicAuth} from "../Middleware/authorization-middleware";
 import {BlogsRepository} from "../Repository/blogs-repository";
 
 export const BlogsRouter = Router()
@@ -21,7 +22,7 @@ BlogsRouter.get('/:id',
             res.send(404)
         }
     })
-BlogsRouter.delete('/:id', (req: Request, res: Response) => {
+BlogsRouter.delete('/:id',mwBasicAuth, (req: Request, res: Response) => {
     const deleteBlog = BlogsRepository.deleteBlog(+req.params.id)
     if (deleteBlog) {
         res.send(204)
@@ -30,7 +31,7 @@ BlogsRouter.delete('/:id', (req: Request, res: Response) => {
     }
 })
 
-BlogsRouter.put('/:id', nameValidation, youtubeUrlValidation, inputValidationMiddleware, (req: Request, res: Response) => {
+BlogsRouter.put('/:id',mwBasicAuth, nameValidation, youtubeUrlValidation, inputValidationMiddleware, (req: Request, res: Response) => {
     const isUpdate = BlogsRepository.updateBlog(+req.params.id, req.body.name, req.body.youtubeUrl)
     if (isUpdate) {
         const blog = BlogsRepository.findBlogByID(+req.params.id)
@@ -40,7 +41,7 @@ BlogsRouter.put('/:id', nameValidation, youtubeUrlValidation, inputValidationMid
     }
 })
 
-BlogsRouter.post('/', nameValidation, youtubeUrlValidation, inputValidationMiddleware, (req: Request, res: Response) => {
+BlogsRouter.post('/', mwBasicAuth, nameValidation, youtubeUrlValidation, inputValidationMiddleware, (req: Request, res: Response) => {
     const newBlog = BlogsRepository.createBlog(req.body.name, req.body.youtubeUrl)
     res.status(201).send(newBlog)
 })
