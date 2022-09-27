@@ -49,7 +49,7 @@ export const PostsRepository = {
             title: title,
             shortDescription: shortDescription,
             content: content,
-            bloggerId: bloggerId,
+            bloggerId: bloggerId ,
             bloggerName: bloggerName
 
         }
