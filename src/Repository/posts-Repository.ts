@@ -34,12 +34,10 @@ export const PostsRepository = {
     },
     updatePost(id: number, title: string, shortDescription: string, content: string, bloggerId: number, bloggerName: string) {
         let post = posts.find(p => p.id === +id)
-        if (post) {
-            post.title = title
-            post.shortDescription = shortDescription
-            post.content = content
-            post.bloggerId = bloggerId
-            post.bloggerName = bloggerName
+        const blogger = blogs.find((e) => e.id === bloggerId)
+        if (post && blogger) {
+            posts[id] = {id, title, shortDescription, content, bloggerId, bloggerName}
+            blogs[bloggerId] = {id: bloggerId, name: bloggerName, youtubeUrl: blogger.youtubeUrl}
             return true
         } else {
             return false
