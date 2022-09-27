@@ -4,7 +4,7 @@ export type postsType = {
     shortDescription: string,
     content: string,
     bloggerId: number,
-    bloggerName: string
+    bloggerName: string | undefined
 }
 
 const posts: postsType [] = [];
@@ -43,7 +43,7 @@ export const PostsRepository = {
             return false
         }
     },
-    createPost(title: string, shortDescription: string, content: string, bloggerId: number, bloggerName: string) {
+    createPost(title: string, shortDescription: string, content: string, bloggerId: number, bloggerName: string|undefined) {
         const newPost: postsType = {
             id: +(new Date()),
             title: title,

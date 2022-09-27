@@ -1,10 +1,9 @@
 import {Request, Response, NextFunction} from "express";
-import {body, validationResult} from "express-validator";
-import {ifError} from "assert";
+import { validationResult} from "express-validator";
+
 
 
 export const inputValidationMiddleware = (req: Request<{}, { bloggerId: number }>, res: Response, next: NextFunction) => {
-
     const errors = validationResult(req)
     const customErrors = []
 
