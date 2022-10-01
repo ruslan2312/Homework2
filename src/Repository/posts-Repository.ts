@@ -9,7 +9,7 @@ export type postsType = {
     blogName: string
 }
 
-const posts: postsType [] = [];
+export const posts: postsType [] = [];
 
 export const PostsRepository = {
     findPost(title: string | null | undefined) {
@@ -32,7 +32,6 @@ export const PostsRepository = {
         return false
     },
     updatePost(id: string, title: string, shortDescription: string, content: string, blogId: string) {
-
         let postIndex = posts.findIndex((e) => e.id === id)
         debugger
         if (postIndex != -1) {
@@ -44,7 +43,6 @@ export const PostsRepository = {
         } else {
             return false
         }
-
     },
     createPost(title: string, shortDescription: string, content: string, blogId: string) {
         const blogger = blogs.find((e) => e.id === blogId)
