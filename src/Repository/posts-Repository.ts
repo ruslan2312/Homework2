@@ -1,14 +1,15 @@
+import {blogs} from "./blogs-repository";
+
 export type postsType = {
     id: string,
     title: string,
     shortDescription: string,
     content: string,
-    bloggerId: string,
-    bloggerName: string
+    blogId: string,
+    blogName: string
 }
 
 const posts: postsType [] = [];
-
 
 export const PostsRepository = {
     findPost(title: string | null | undefined) {
@@ -30,28 +31,37 @@ export const PostsRepository = {
         }
         return false
     },
-    updatePost(id: string, title: string, shortDescription: string, content: string, bloggerId: string) {
-        let post = posts.find(p => p.id === id)
-        if (post) {
-            post.title = title
-            post.shortDescription = shortDescription
-            post.content = content
-            post.bloggerId = bloggerId
+    updatePost(id: string, title: string, shortDescription: string, content: string, blogId: string) {
+
+        let postIndex = posts.findIndex((e) => e.id === id)
+        debugger
+        if (postIndex != -1) {
+            posts[postIndex].title = title
+            posts[postIndex].shortDescription = shortDescription
+            posts[postIndex].content = content
+            posts[postIndex].blogId = blogId
             return true
         } else {
             return false
         }
+
     },
-    createPost(title: string, shortDescription: string, content: string, bloggerId: string) {
-        const newPost: postsType = {
-            id: new Date().toString(),
-            title: title,
-            shortDescription: shortDescription,
-            content: content,
-            bloggerId: bloggerId,
-            bloggerName: 's'
+    createPost(title: string, shortDescription: string, content: string, blogId: string) {
+        const blogger = blogs.find((e) => e.id === blogId)
+        console.log(blogger)
+        if (blogger) {
+            const newPost: postsType = {
+                id: new Date().toISOString(),
+                title: title,
+                shortDescription: shortDescription,
+                content: content,
+                blogId: blogId,
+                blogName: blogger.name
+            }
+            posts.push(newPost)
+            return newPost
         }
-        posts.push(newPost)
-        return newPost
+        return null
+
     }
 }

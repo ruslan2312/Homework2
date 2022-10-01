@@ -39,7 +39,7 @@ export const BlogsRepository = {
     },
     createBlog(name: string, youtubeUrl: string) {
         const newBlog: blogsType = {
-            id: new Date().toString(),
+            id: new Date().toISOString(),
             name: name,
             youtubeUrl: youtubeUrl
         }
