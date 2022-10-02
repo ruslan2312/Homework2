@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000
 app.use(bodyParser())
 app.use('/blogs', BlogsRouter)
 app.use('/posts', PostsRouter)
-app.use('/testing', allDelete)
+app.use('/testing/all-data', allDelete)
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

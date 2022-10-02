@@ -61,5 +61,11 @@ export const PostsRepository = {
         }
         return null
 
+    },
+    deleteAllPosts() {
+        for (let i = 0; i < posts.length; i++) {
+            posts.splice(i, 1);
+        }
+        return true
     }
 }

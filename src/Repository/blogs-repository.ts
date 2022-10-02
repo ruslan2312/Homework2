@@ -45,5 +45,12 @@ export const BlogsRepository = {
         }
         blogs.push(newBlog)
         return newBlog
-    }
+    },
+    deleteAllBlogger() {
+        for (let i = 0; i < blogs.length; i++) {
+            blogs.splice(i, 1);
+        }
+        return true
+    },
+
 }

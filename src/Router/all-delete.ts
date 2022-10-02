@@ -1,10 +1,11 @@
-import {deleteAllRepository} from "../Repository/delete-all-repository";
 import {Request, Response, Router} from "express";
+import {PostsRepository} from "../Repository/posts-Repository";
+import {BlogsRepository} from "../Repository/blogs-repository";
 
 export const allDelete = Router();
 
-allDelete.delete('/testing/all-data', (req: Request, res: Response) => {
-    deleteAllRepository.deleteAllBlogger()
-    deleteAllRepository.deleteAllPosts()
+allDelete.delete('/', (req: Request, res: Response) => {
+    BlogsRepository.deleteAllBlogger()
+    PostsRepository.deleteAllPosts()
     res.send(204)
 })
