@@ -3,7 +3,8 @@ import {BlogsCollection} from "./db";
 export type BlogsType = {
     id: string,
     name: string,
-    youtubeUrl: string
+    youtubeUrl: string,
+    createdAt: string
 }
 
 export const blogs: BlogsType [] = [];
@@ -35,9 +36,10 @@ export const BlogsRepository = {
     },
     async createBlog(name: string, youtubeUrl: string): Promise<BlogsType> {
         const newBlog = {
-            id: new Date().toISOString(),
+            id: new Date().valueOf().toString(),
             name: name,
-            youtubeUrl: youtubeUrl
+            youtubeUrl: youtubeUrl,
+            createdAt: new Date().toISOString()
         }
         const result = await BlogsCollection.insertOne(newBlog)
         return newBlog

@@ -6,7 +6,8 @@ export type PostsType = {
     shortDescription: string,
     content: string,
     blogId: string,
-    blogName: string
+    blogName: string,
+    createdAt: string
 }
 
 export const posts: PostsType [] = [];
@@ -49,12 +50,13 @@ export const PostsRepository = {
         debugger
         if (blogger) {
             const newPost: PostsType = {
-                id: new Date().toISOString(),
+                id: new Date().valueOf().toString(),
                 title: title,
                 shortDescription: shortDescription,
                 content: content,
                 blogId: blogId,
-                blogName: blogger.name
+                blogName: blogger.name,
+                createdAt: new Date().toISOString()
             }
             await PostsCollection.insertOne(newPost)
             return newPost
