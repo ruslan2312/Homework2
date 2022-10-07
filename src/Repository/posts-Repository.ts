@@ -21,7 +21,7 @@ export const PostsRepository = {
         return PostsCollection.find(filter, {projection: {_id: 0}}).toArray()
     },
     async findPostByID(id: string): Promise<PostsType | null> {
-        let post: PostsType | null = await PostsCollection.findOne({id: id}, {projection:{_id:0}})
+        let post: PostsType | null = await PostsCollection.findOne({id: id})
         if (post) {
             return post
         } else {
