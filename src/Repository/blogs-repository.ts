@@ -19,7 +19,7 @@ export const BlogsRepository = {
         return BlogsCollection.find(filter ,{projection:{_id:0}}).toArray()
     },
     async findBlogByID(id: string): Promise<BlogsType | null> {
-        let product: BlogsType | null = await BlogsCollection.findOne({id: id})
+        let product: BlogsType | null = await BlogsCollection.findOne({id: id}, {projection:{_id:0}})
         if (product) {
             return product
         } else {
