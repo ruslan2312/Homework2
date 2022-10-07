@@ -19,7 +19,7 @@ export const BlogsRepository = {
         return BlogsCollection.find(filter ,{projection:{_id:0}}).toArray()
     },
     async findBlogByID(id: string): Promise<BlogsType | null> {
-        let product: BlogsType | null = await BlogsCollection.findOne({id: id}, {projection:{_id:0}})
+        let product: BlogsType | null = await BlogsCollection.findOne({id: id},)
         if (product) {
             return product
         } else {
@@ -42,7 +42,7 @@ export const BlogsRepository = {
             createdAt: new Date().toISOString()
         }
         const result = await BlogsCollection.insertOne(newBlog)
-        return (newBlog)
+        return (newBlog )
     },
     async deleteAllBlogger(): Promise<boolean> {
         const result = await BlogsCollection.deleteMany({})
