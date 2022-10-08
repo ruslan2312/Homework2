@@ -1,9 +1,12 @@
+import * as dotenv from "dotenv"
 import express from "express"
 import bodyParser from "body-parser";
 import {BlogsRouter} from "./Router/blogs-router";
 import {PostsRouter} from "./Router/posts-router";
 import {allDelete} from "./Router/all-delete";
 import {runDb} from "./Repository/db";
+
+dotenv.config()
 
 const app = express();
 const port = process.env.PORT || 3000

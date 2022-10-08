@@ -21,7 +21,7 @@ export const PostsRepository = {
         return PostsCollection.find(filter, {projection: {_id: 0}}).toArray()
     },
     async findPostByID(id: string): Promise<PostsType | null> {
-        let post: PostsType | null = await PostsCollection.findOne({id: id}, )
+        let post: PostsType | null = await PostsCollection.findOne({id: id},{projection: {_id: 0}} )
         if (post) {
             return post
         } else {
@@ -58,7 +58,7 @@ export const PostsRepository = {
                 blogName: blogger.name,
                 createdAt: new Date().toISOString()
             }
-            await PostsCollection.insertOne(newPost)
+            await PostsCollection.insertOne({...newPost})
             return newPost
         }
         return null
