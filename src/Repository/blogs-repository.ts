@@ -1,4 +1,5 @@
-import {BlogsCollection} from "./db";
+import {BlogsCollection, PostsCollection} from "./db";
+import {PostsType} from "./posts-repository";
 
 export type BlogsType = {
     id: string,
@@ -19,9 +20,12 @@ export const BlogsRepository = {
         return BlogsCollection.find(filter, {projection: {_id: 0}}).toArray()
     },
     async findBlogByID(id: string): Promise<BlogsType | null> {
-        let product: BlogsType | null = await BlogsCollection.findOne({id: id}, {projection: {_id: 0}})
-        if (product) {
-            return product
+        return await BlogsCollection.findOne({id: id}, {projection: {_id: 0}});
+    },
+    async findBlogAndPostByID(id: string): Promise<PostsType | null> {
+        let post: PostsType | null = await PostsCollection.findOne({blogId: id}, {projection: {_id: 0}})
+        if (post) {
+            return post
         } else {
             return null
         }

@@ -4,6 +4,7 @@ import {inputValidationMiddleware} from "../Middleware/input-validation-middlewa
 import {mwBasicAuth} from "../Middleware/authorization-middleware";
 import {BlogsType} from "../Repository/blogs-repository";
 import {BlogsService} from "../Service/blogs-service";
+import {PostsType} from "../Repository/posts-repository";
 
 export const BlogsRouter = Router()
 
@@ -19,6 +20,16 @@ BlogsRouter.get('/:id',
         let video: BlogsType | null = await BlogsService.findBlogByID(req.params.id)
         if (video) {
             res.status(200).send(video)
+        } else {
+            res.send(404)
+        }
+    })
+BlogsRouter.get('/:id/posts',
+    async (req: Request, res: Response) => {
+        console.log(req.params.id)
+        let post: PostsType | null = await BlogsService.findBlogAndPostByID(req.params.id)
+        if (post) {
+            res.status(200).send(post)
         } else {
             res.send(404)
         }
