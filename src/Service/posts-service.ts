@@ -1,4 +1,4 @@
-import {PostsRepository,PostsType} from "../Repository/posts-Repository";
+import {PostsRepository,PostsType} from "../Repository/posts-repository";
 import {BlogsCollection, PostsCollection} from "../Repository/db";
 
 export const PostsService = {
@@ -27,7 +27,6 @@ export const PostsService = {
                 createdAt: new Date().toISOString()
             }
             return  await PostsRepository.createPost(newPost)
-            return newPost
         }
         return null
     },

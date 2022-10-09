@@ -44,7 +44,7 @@ export const PostsRepository = {
         return result.matchedCount === 1
     },
     async createPost(newPost: PostsType): Promise<PostsType> {
-        const result = await PostsCollection.insertOne(newPost)
+        const result = await PostsCollection.insertOne({...newPost})
         return newPost
     },
     async deleteAllPosts(): Promise<boolean> {

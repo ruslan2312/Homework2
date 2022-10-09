@@ -1,6 +1,6 @@
 import {MongoClient} from "mongodb"
 import {BlogsType} from "./blogs-repository";
-import {PostsType} from "./posts-Repository";
+import {PostsType} from "./posts-repository";
 
 
 const mongoUri = process.env.mongoURI || "mongodb+srv://admin:hecbrhecbr1@cluster0.3r5xv3r.mongodb.net/?retryWrites=true&w=majority"
