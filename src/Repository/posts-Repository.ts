@@ -21,7 +21,7 @@ export const PostsRepository = {
         return PostsCollection.find(filter, {projection: {_id: 0}}).toArray()
     },
     async findPostByID(id: string): Promise<PostsType | null> {
-        let post: PostsType | null = await PostsCollection.findOne({id: id},{projection: {_id: 0}} )
+        let post: PostsType | null = await PostsCollection.findOne({id: id}, {projection: {_id: 0}})
         if (post) {
             return post
         } else {
@@ -43,26 +43,9 @@ export const PostsRepository = {
         })
         return result.matchedCount === 1
     },
-    async createPost(title: string, shortDescription: string, content: string, blogId: string): Promise<PostsType | null> {
-        debugger
-        const blogger = await BlogsCollection.findOne({id: blogId})
-        console.log(blogger)
-        debugger
-        if (blogger) {
-            const newPost: PostsType = {
-                id: new Date().valueOf().toString(),
-                title: title,
-                shortDescription: shortDescription,
-                content: content,
-                blogId: blogId,
-                blogName: blogger.name,
-                createdAt: new Date().toISOString()
-            }
-            await PostsCollection.insertOne({...newPost})
-            return newPost
-        }
-        return null
-
+    async createPost(newPost: PostsType): Promise<PostsType> {
+        const result = await PostsCollection.insertOne(newPost)
+        return newPost
     },
     async deleteAllPosts(): Promise<boolean> {
         const result = await PostsCollection.deleteMany({})

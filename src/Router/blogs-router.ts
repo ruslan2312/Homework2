@@ -42,6 +42,7 @@ BlogsRouter.put('/:id', mwBasicAuth, nameValidation, youtubeUrlValidation, input
 })
 
 BlogsRouter.post('/', mwBasicAuth, nameValidation, youtubeUrlValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
+    console.log(req.body.name, typeof req.body.name)
     const newBlog: BlogsType = await BlogsRepository.createBlog(req.body.name, req.body.youtubeUrl)
     res.status(201).send(newBlog)
 })
