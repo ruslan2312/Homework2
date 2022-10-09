@@ -1,5 +1,6 @@
 import {BlogsRepository, BlogsType} from "../Repository/blogs-repository";
-import { PostsType} from "../Repository/posts-repository";
+import {PostsRepository, PostsType} from "../Repository/posts-repository";
+import {BlogsCollection} from "../Repository/db";
 
 export const BlogsService = {
     async findBlog(name: string | null | undefined): Promise<BlogsType[]> {
@@ -25,6 +26,22 @@ export const BlogsService = {
             createdAt: new Date().toISOString()
         }
         return await BlogsRepository.createBlog(newBlog)
+    },
+    async createPostByBlog(blogId: string, title: string, shortDescription: string, content: string): Promise<PostsType | null> {
+        const blogger = await BlogsCollection.findOne({id: blogId})
+        if (blogger) {
+            const newPost: PostsType = {
+                id: new Date().valueOf().toString(),
+                title: title,
+                shortDescription: shortDescription,
+                content: content,
+                blogId: blogId,
+                blogName: blogger.name,
+                createdAt: new Date().toISOString()
+            }
+            return await PostsRepository.createPost(newPost)
+        }
+        return null
     },
     async deleteAllBlogger(): Promise<boolean> {
         return BlogsRepository.deleteAllBlogger()

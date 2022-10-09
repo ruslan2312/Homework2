@@ -5,6 +5,13 @@ import {mwBasicAuth} from "../Middleware/authorization-middleware";
 import {BlogsType} from "../Repository/blogs-repository";
 import {BlogsService} from "../Service/blogs-service";
 import {PostsType} from "../Repository/posts-repository";
+import {
+    blogIdValidation,
+    blogNameValidation,
+    contentValidation,
+    shortDescriptionValidation,
+    titleValidation
+} from "./posts-router";
 
 export const BlogsRouter = Router()
 
@@ -56,6 +63,12 @@ BlogsRouter.put('/:id', mwBasicAuth, nameValidation, youtubeUrlValidation, input
 BlogsRouter.post('/', mwBasicAuth, nameValidation, youtubeUrlValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
     const newBlog: BlogsType = await BlogsService.createBlog(req.body.name, req.body.youtubeUrl)
     res.status(201).send(newBlog)
+})
+
+BlogsRouter.post('/:blogId/posts', mwBasicAuth, titleValidation, shortDescriptionValidation, contentValidation,
+     blogNameValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
+    const newPost: PostsType | null = await BlogsService.createPostByBlog(req.params.blogId, req.body.title, req.body.shortDescription,req.body.content)
+    res.status(201).send(newPost)
 })
 
 
