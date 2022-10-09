@@ -2,7 +2,6 @@ import {Request, Response, Router} from "express";
 import {body} from 'express-validator';
 import {inputValidationMiddleware} from "../Middleware/input-validation-middleware";
 import {mwBasicAuth} from "../Middleware/authorization-middleware";
-import {PostsRepository} from "../Repository/posts-Repository";
 import {PostsService} from "../Service/posts-service";
 
 export const PostsRouter = Router()
