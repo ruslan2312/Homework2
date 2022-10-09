@@ -34,13 +34,7 @@ export const BlogsRepository = {
         const result = await BlogsCollection.updateOne({id: id}, {$set: {name: name, youtubeUrl: youtubeUrl}})
         return result.matchedCount === 1
     },
-    async createBlog(name: string, youtubeUrl: string): Promise<BlogsType> {
-        const newBlog = {
-            id: new Date().valueOf().toString(),
-            name: name,
-            youtubeUrl: youtubeUrl,
-            createdAt: new Date().toISOString()
-        }
+    async createBlog(newBlog: BlogsType): Promise<BlogsType> {
         const result = await BlogsCollection.insertOne({...newBlog})
         return newBlog
     },
