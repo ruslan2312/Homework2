@@ -29,6 +29,7 @@ export const BlogsService = {
     },
     async createPostByBlog(blogId: string, title: string, shortDescription: string, content: string): Promise<PostsType | null> {
         const blogger = await BlogsCollection.findOne({id: blogId})
+        debugger
         if (blogger) {
             const newPost: PostsType = {
                 id: new Date().valueOf().toString(),
