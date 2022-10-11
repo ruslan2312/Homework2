@@ -1,5 +1,6 @@
-import {PostsRepository,PostsType} from "../Repository/posts-repository";
-import {BlogsCollection, PostsCollection} from "../Repository/db";
+import {PostsRepository} from "../Repository/posts-repository";
+import {BlogsCollection} from "../Repository/db";
+import {PostsType} from "../Type/Type";
 
 export const PostsService = {
     async findPost(title: string | null | undefined): Promise<PostsType[]> {
@@ -26,7 +27,7 @@ export const PostsService = {
                 blogName: blogger.name,
                 createdAt: new Date().toISOString()
             }
-            return  await PostsRepository.createPost(newPost)
+            return await PostsRepository.createPost(newPost)
         }
         return null
     },

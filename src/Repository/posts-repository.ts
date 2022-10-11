@@ -1,14 +1,6 @@
-import {BlogsCollection, PostsCollection} from "./db";
+import {PostsCollection} from "./db";
+import {PostsType} from "../Type/Type";
 
-export type PostsType = {
-    id: string,
-    title: string,
-    shortDescription: string,
-    content: string,
-    blogId: string,
-    blogName: string,
-    createdAt: string
-}
 
 export const posts: PostsType [] = [];
 

@@ -1,23 +1,31 @@
 import {BlogsCollection, PostsCollection} from "./db";
-import {PostsType} from "./posts-repository";
+import {BlogsType, PaginationQueryType, PostsType} from "../Type/Type";
 
-export type BlogsType = {
-    id: string,
-    name: string,
-    youtubeUrl: string,
-    createdAt: string
-}
 
 export const blogs: BlogsType [] = [];
 
 
 export const BlogsRepository = {
-    async findBlog(name: string | null | undefined): Promise<BlogsType[]> {
+    async findBlog(queryData: PaginationQueryType): Promise<BlogsType[]> {
         let filter: any = {}
-        if (name) {
-            filter.title = {$regex: name}
+        if (queryData.searchNameTerm) {
+            filter.title = {$regex: queryData.searchNameTerm}
         }
-        return BlogsCollection.find(filter, {projection: {_id: 0}}).toArray()
+        const countDocuments = await BlogsCollection.countDocuments({name: {$regex: queryData.searchNameTerm}})
+        //todo pagesCount, refactoring...
+        const items = BlogsCollection.find(filter, {projection: {_id: 0}})
+            .sort(queryData.sortBy, queryData.sortDirection)
+            .skip((queryData.pageNumber - 1) * queryData.pageSize)
+            .limit(queryData.pageSize)
+            .toArray()
+        return items
+        // return new Promise((res, rej)=>res)
+        //todo
+        // {
+        //     pagesCount...
+        //     ......
+        //     items: []
+        // }
     },
     async findBlogByID(id: string): Promise<BlogsType | null> {
         return await BlogsCollection.findOne({id: id}, {projection: {_id: 0}});

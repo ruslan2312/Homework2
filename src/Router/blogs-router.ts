@@ -2,9 +2,9 @@ import {Request, Response, Router} from "express";
 import {body} from 'express-validator';
 import {inputValidationMiddleware} from "../Middleware/input-validation-middleware";
 import {mwBasicAuth} from "../Middleware/authorization-middleware";
-import {BlogsType} from "../Repository/blogs-repository";
 import {BlogsService} from "../Service/blogs-service";
-import {PostsType} from "../Repository/posts-repository";
+import {PostsType, BlogsType,PaginationQueryType} from "../Type/Type";
+
 import {
     blogNameValidation,
     contentValidation,
@@ -17,8 +17,19 @@ export const BlogsRouter = Router()
 const nameValidation = body('name').trim().isLength({min: 1, max: 15})
 const youtubeUrlValidation = body('youtubeUrl').isURL().isLength({min: 1, max: 100})
 
+const getPaginationData = (query: any): PaginationQueryType => {
+    const searchNameTerm = query.searchNameTerm ? query.searchNameTerm : "";
+    const pageSize = isNaN(query.pageSize) ? 1 : query.pageSize;
+    const pageNumber = isNaN(query.pageNumber) ? 1 : query.pageNumber;
+    const sortBy = query.sortBy === "name" ? "name" : "createdAt";
+    const sortDirection = query.sortDirection === "asc" ? "asc" : "desc";
+    return {searchNameTerm, pageSize, pageNumber, sortBy, sortDirection}
+}
+
 BlogsRouter.get('/', async (req: Request, res: Response) => {
-    const findBlogs: BlogsType[] = await BlogsService.findBlog(req.query.name?.toString())
+    // const findBlogs: BlogsType[] = await BlogsService.findBlog(req.query.name?.toString())
+    const queryData = getPaginationData(req.query);
+    const findBlogs: BlogsType[] = await BlogsService.findBlog(queryData);
     res.status(200).send(findBlogs)
 })
 BlogsRouter.get('/:id',

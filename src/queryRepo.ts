@@ -6,7 +6,7 @@
 //         return []
 //     }
 // }
-// type dbPosts = {
+// Type dbPosts = {
 //     _id: object,
 //     id: string,
 //     title: string,
@@ -16,7 +16,7 @@
 //     blogName: string,
 //     createdAt: string
 // }
-// type Post = {
+// Type Post = {
 //     id: string,
 //     title: string,
 //     shortDescription: string,
