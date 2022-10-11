@@ -12,6 +12,7 @@ import {
     shortDescriptionValidation,
     titleValidation
 } from "./posts-router";
+import {PostsService} from "../Service/posts-service";
 
 export const BlogsRouter = Router()
 
@@ -67,7 +68,7 @@ BlogsRouter.post('/', mwBasicAuth, nameValidation, youtubeUrlValidation, inputVa
 
 BlogsRouter.post('/:blogId/posts', mwBasicAuth, titleValidation, shortDescriptionValidation, contentValidation,
      blogNameValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
-    const newPost: PostsType | null = await BlogsService.createPostByBlog(req.params.blogId, req.body.title, req.body.shortDescription,req.body.content)
+    const newPost: PostsType | null = await PostsService.createPost(req.params.blogId, req.body.title, req.body.shortDescription,req.body.content)
     res.status(201).send(newPost)
 })
 
