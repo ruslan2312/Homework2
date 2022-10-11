@@ -19,14 +19,16 @@ export const BlogsRepository = {
             .limit(queryData.pageSize)
             .toArray()
         return items
-        // return new Promise((res, rej)=>res)
-        //todo
-        // {
-        //     pagesCount...
-        //     ......
-        //     items: []
-        // }
+        // return new Promise((res, rej) => {
+        // })
     },
+    //todo
+    // {
+    //     pagesCount...
+    //     ......
+    //     items: []
+    // }
+
     async findBlogByID(id: string): Promise<BlogsType | null> {
         return await BlogsCollection.findOne({id: id}, {projection: {_id: 0}});
     },
