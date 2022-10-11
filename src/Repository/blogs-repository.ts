@@ -15,6 +15,7 @@ export const BlogsRepository = {
         const page = queryData.pageNumber
         const pageSize = queryData.pageSize
         const totalCount = countDocuments
+
         //todo pagesCount, refactoring...
         const items = await BlogsCollection.find(filter, {projection: {_id: 0}})
             .sort(queryData.sortBy, queryData.sortDirection)
