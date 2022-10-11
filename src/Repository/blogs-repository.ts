@@ -3,7 +3,6 @@ import {BlogsType, PaginationQueryType, PostsType} from "../Type/Type";
 
 export const blogs: BlogsType [] = [];
 
-
 export const BlogsRepository = {
     async findBlog(queryData: PaginationQueryType): Promise<any> {
         let filter: any = {}
@@ -19,7 +18,7 @@ export const BlogsRepository = {
         //todo pagesCount, refactoring...
         const items = await BlogsCollection.find(filter, {projection: {_id: 0}})
             .sort(queryData.sortBy, queryData.sortDirection)
-            .skip((queryData.pageNumber - 1) * queryData.pageSize)
+            .skip((queryData.pageNumber) * queryData.pageSize)
             .limit(queryData.pageSize)
             .toArray()
 
