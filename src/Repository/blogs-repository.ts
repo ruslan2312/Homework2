@@ -5,25 +5,25 @@ export const blogs: BlogsType [] = [];
 
 export const BlogsRepository = {
     async findBlog(queryData: PaginationQueryType): Promise<any> {
+        debugger
         let filter: any = {}
         if (queryData.searchNameTerm) {
             filter.title = {$regex: queryData.searchNameTerm}
         }
-        const countDocuments = await BlogsCollection.countDocuments({name: {$regex: queryData.searchNameTerm}})
-        const pagesCount = queryData.pageNumber
-        const page = queryData.pageNumber
-        const pageSize = queryData.pageSize
-        const totalCount = countDocuments
-
-        //todo pagesCount, refactoring...
+        const totalCount = await BlogsCollection.countDocuments({name: {$regex: queryData.searchNameTerm}})
+        const pagesCount =  Number(queryData.pageNumber)
+        const page = Number(queryData.pageNumber)
+        const pageSize = Number(queryData.pageSize)
+debugger
+        //todo pagesCount, refactoring...de
         const items = await BlogsCollection.find(filter, {projection: {_id: 0}})
             .sort(queryData.sortBy, queryData.sortDirection)
-            .skip((queryData.pageNumber) * queryData.pageSize)
-            .limit(queryData.pageSize)
+            .skip((queryData.pageNumber - 1) * pageSize)
+            .limit(pageSize)
             .toArray()
 
         // const items = await items
-        return Promise.resolve({ pagesCount, page, pageSize, totalCount, items,})
+        return Promise.resolve({pagesCount, page, pageSize, totalCount, items,})
 
 
         // return new Promise((res, rej) => {
