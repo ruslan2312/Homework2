@@ -8,7 +8,7 @@ export const BlogsRepository = {
         debugger
         let filter: any = {}
         if (queryData.searchNameTerm) {
-            filter.name = { $regex: queryData.searchNameTerm}
+            filter.name = { $regex: queryData.searchNameTerm.toLowerCase()}
         }
         debugger
         const totalCount = await BlogsCollection.countDocuments({name: {$regex: queryData.searchNameTerm}})
