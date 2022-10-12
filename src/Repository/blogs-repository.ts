@@ -11,14 +11,14 @@ export const BlogsRepository = {
             filter.title = {$regex: queryData.searchNameTerm}
         }
         const totalCount = await BlogsCollection.countDocuments({name: {$regex: queryData.searchNameTerm}})
-        const pagesCount =  Number(queryData.pageNumber)
+        const pagesCount = Number(Math.floor(totalCount / queryData.pageSize))
         const page = Number(queryData.pageNumber)
         const pageSize = Number(queryData.pageSize)
-debugger
+        debugger
         //todo pagesCount, refactoring...de
         const items = await BlogsCollection.find(filter, {projection: {_id: 0}})
             .sort(queryData.sortBy, queryData.sortDirection)
-            .skip((queryData.pageNumber - 1) * pageSize)
+            .skip((page - 1) * pageSize)
             .limit(pageSize)
             .toArray()
 
@@ -57,11 +57,11 @@ debugger
         return result.matchedCount === 1
     },
     async createBlog(newBlog: BlogsType): Promise<BlogsType> {
-        const result = await BlogsCollection.insertOne({...newBlog})
+        await BlogsCollection.insertOne({...newBlog});
         return newBlog
     },
     async createPostByBlog(newPost: PostsType): Promise<PostsType> {
-        const result = await PostsCollection.insertOne({...newPost})
+        await PostsCollection.insertOne({...newPost});
         return newPost
     },
     async deleteAllBlogger(): Promise<boolean> {
