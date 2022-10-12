@@ -8,13 +8,13 @@ export const BlogsRepository = {
         debugger
         let filter: any = {}
         if (queryData.searchNameTerm) {
-            filter.title = {$regex: queryData.searchNameTerm}
+            filter.name = { $regex: queryData.searchNameTerm}
         }
+        debugger
         const totalCount = await BlogsCollection.countDocuments({name: {$regex: queryData.searchNameTerm}})
         const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
         const page = Number(queryData.pageNumber)
         const pageSize = Number(queryData.pageSize)
-        debugger
         //todo pagesCount, refactoring...de
         const items = await BlogsCollection.find(filter, {projection: {_id: 0}})
             .sort(queryData.sortBy, queryData.sortDirection)
