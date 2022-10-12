@@ -8,10 +8,10 @@ export const BlogsRepository = {
         debugger
         let filter: any = {}
         if (queryData.searchNameTerm) {
-            filter.name = { $regex: queryData.searchNameTerm.toLowerCase()}
+            filter.name = { $regex: queryData.searchNameTerm, $options: 'i'}
         }
         debugger
-        const totalCount = await BlogsCollection.countDocuments({name: {$regex: queryData.searchNameTerm}})
+        const totalCount = await BlogsCollection.countDocuments({name:  {$regex: queryData.searchNameTerm }})
         const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
         const page = Number(queryData.pageNumber)
         const pageSize = Number(queryData.pageSize)
@@ -24,7 +24,7 @@ export const BlogsRepository = {
         return Promise.resolve({pagesCount, page, pageSize, totalCount, items,})
     },
     async findBlogByID(id: string): Promise<BlogsType | null> {
-        return await BlogsCollection.findOne({id: id}, {projection: {_id: 0}});
+        return await BlogsCollection.findOne({id: id}, {projection: {_id: 0} });
     },
     async findBlogAndPostByID(id: string): Promise<PostsType | null> {
         let post: PostsType | null = await PostsCollection.findOne({blogId: id}, {projection: {_id: 0}})
