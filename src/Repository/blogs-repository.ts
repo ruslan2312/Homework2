@@ -11,7 +11,7 @@ export const BlogsRepository = {
             filter.title = {$regex: queryData.searchNameTerm}
         }
         const totalCount = await BlogsCollection.countDocuments({name: {$regex: queryData.searchNameTerm}})
-        const pagesCount = Number(Math.floor(totalCount / queryData.pageSize))
+        const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
         const page = Number(queryData.pageNumber)
         const pageSize = Number(queryData.pageSize)
         debugger
