@@ -1,4 +1,4 @@
-import {BlogsCollection, PostsCollection} from "./db";
+import { PostsCollection} from "./db";
 import {PostPaginationQueryType, PostsType} from "../Common/Type";
 
 
@@ -8,15 +8,15 @@ export const PostsRepository = {
     async findPost(queryData: PostPaginationQueryType): Promise<any> {
         let filter: any = {}
         const totalCount = await PostsCollection.countDocuments({
-            name: {
-                 $regex: queryData.searchNameTerm,
+            title: {
+                $regex: queryData.searchNameTerm,
                 $options: 'i'
             }
         })
         const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
         const page = Number(queryData.pageNumber)
         const pageSize = Number(queryData.pageSize)
-        const items = await BlogsCollection.find(filter, {projection: {_id: 0}})
+        const items = await PostsCollection.find(filter, {projection: {_id: 0}})
             .sort(queryData.sortBy, queryData.sortDirection)
             .skip((page - 1) * pageSize)
             .limit(pageSize)
@@ -47,7 +47,7 @@ export const PostsRepository = {
         return result.matchedCount === 1
     },
     async createPost(newPost: PostsType): Promise<PostsType> {
-        const result = await PostsCollection.insertOne({...newPost})
+        await PostsCollection.insertOne({...newPost});
         return newPost
     },
     async deleteAllPosts(): Promise<boolean> {

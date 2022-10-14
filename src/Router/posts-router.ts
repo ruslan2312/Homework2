@@ -2,6 +2,7 @@ import {Request, Response, Router} from "express";
 import {inputValidationMiddleware} from "../Middleware/input-validation-middleware";
 import {mwBasicAuth} from "../Middleware/authorization-middleware";
 import {PostsService} from "../Service/posts-service";
+import {PostsType} from "../Common/Type";
 import {
     titleValidation,
     shortDescriptionValidation,
@@ -11,12 +12,13 @@ import {
 } from "../Common/validator";
 import {getPostPaginationData} from "../Common/GetBlogPaginationData";
 
+
 export const PostsRouter = Router()
 
 
 PostsRouter.get('/', async (req: Request, res: Response) => {
     const queryData = getPostPaginationData(req.query)
-    const findPosts = await PostsService.findPost(queryData)
+    const findPosts: PostsType[] = await PostsService.findPost(queryData)
     res.status(200).send(findPosts)
 })
 PostsRouter.get('/:id',
