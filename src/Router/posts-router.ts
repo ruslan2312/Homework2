@@ -9,12 +9,14 @@ import {
     blogIdValidation,
     blogNameValidation
 } from "../Common/validator";
+import {getPostPaginationData} from "../Common/GetBlogPaginationData";
 
 export const PostsRouter = Router()
 
 
 PostsRouter.get('/', async (req: Request, res: Response) => {
-    const findPosts = await PostsService.findPost(req.query.name?.toString())
+    const queryData = getPostPaginationData(req.query)
+    const findPosts = await PostsService.findPost(queryData)
     res.status(200).send(findPosts)
 })
 PostsRouter.get('/:id',

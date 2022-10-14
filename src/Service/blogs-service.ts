@@ -1,10 +1,10 @@
 import {BlogsRepository} from "../Repository/blogs-repository";
 import {PostsRepository} from "../Repository/posts-repository";
 import {BlogsCollection} from "../Repository/db";
-import {PostsType,BlogsType,PaginationQueryType} from "../Common/Type";
+import {PostsType,BlogsType,BlogPaginationQueryType} from "../Common/Type";
 
 export const BlogsService = {
-    async findBlog(query: PaginationQueryType): Promise<BlogsType[]> {
+    async findBlog(query: BlogPaginationQueryType): Promise<BlogsType[]> {
         return BlogsRepository.findBlog(query)
     },
     async findBlogByID(id: string): Promise<BlogsType | null> {

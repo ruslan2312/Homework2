@@ -1,16 +1,27 @@
-import {PostsCollection} from "./db";
-import {PostsType} from "../Common/Type";
+import {BlogsCollection, PostsCollection} from "./db";
+import {PostPaginationQueryType, PostsType} from "../Common/Type";
 
 
 export const posts: PostsType [] = [];
 
 export const PostsRepository = {
-    async findPost(title: string | null | undefined): Promise<PostsType[]> {
+    async findPost(queryData: PostPaginationQueryType): Promise<any> {
         let filter: any = {}
-        if (title) {
-            filter.title = {$regex: title}
-        }
-        return PostsCollection.find(filter, {projection: {_id: 0}}).toArray()
+        const totalCount = await PostsCollection.countDocuments({
+            name: {
+                 $regex: queryData.searchNameTerm,
+                $options: 'i'
+            }
+        })
+        const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
+        const page = Number(queryData.pageNumber)
+        const pageSize = Number(queryData.pageSize)
+        const items = await BlogsCollection.find(filter, {projection: {_id: 0}})
+            .sort(queryData.sortBy, queryData.sortDirection)
+            .skip((page - 1) * pageSize)
+            .limit(pageSize)
+            .toArray()
+        return Promise.resolve({pagesCount, page, pageSize, totalCount, items,})
     },
     async findPostByID(id: string): Promise<PostsType | null> {
         let post: PostsType | null = await PostsCollection.findOne({id: id}, {projection: {_id: 0}})

@@ -3,7 +3,7 @@ import {inputValidationMiddleware} from "../Middleware/input-validation-middlewa
 import {mwBasicAuth} from "../Middleware/authorization-middleware";
 import {BlogsService} from "../Service/blogs-service";
 import {PostsType, BlogsType} from "../Common/Type";
-import {getPaginationData} from "../Common/GetBlogPaginationData";
+import {getBlogPaginationData} from "../Common/GetBlogPaginationData";
 import {
     titleValidation,
     shortDescriptionValidation,
@@ -17,8 +17,7 @@ export const BlogsRouter = Router()
 
 
 BlogsRouter.get('/', async (req: Request, res: Response) => {
-    // const findBlogs: BlogsType[] = await BlogsService.findBlog(req.query.name?.toString())
-    const queryData = getPaginationData(req.query);
+    const queryData = getBlogPaginationData(req.query);
     const findBlogs: BlogsType[] = await BlogsService.findBlog(queryData);
     res.status(200).send(findBlogs)
 })

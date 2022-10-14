@@ -13,10 +13,17 @@ export type PostsType = {
     blogName: string,
     createdAt: string
 }
-export type PaginationQueryType = {
+export type BlogPaginationQueryType = {
     searchNameTerm: string;
     pageSize: number;
     pageNumber: number;
     sortBy: string;
     sortDirection: "asc" | "desc"; //todo Enum
+}
+export type PostPaginationQueryType = {
+    searchNameTerm: string;
+    pageSize: number;
+    pageNumber: number;
+    sortBy: string;
+    sortDirection: "asc" | "desc";
 }

@@ -1,16 +1,14 @@
 import {BlogsCollection, PostsCollection} from "./db";
-import {BlogsType, PaginationQueryType, PostsType} from "../Common/Type";
+import {BlogsType, BlogPaginationQueryType, PostsType} from "../Common/Type";
 
 export const blogs: BlogsType [] = [];
 
 export const BlogsRepository = {
-    async findBlog(queryData: PaginationQueryType): Promise<any> {
-        debugger
+    async findBlog(queryData: BlogPaginationQueryType): Promise<any> {
         let filter: any = {}
         if (queryData.searchNameTerm) {
             filter.name = { $regex: queryData.searchNameTerm, $options: 'i'}
         }
-        debugger
         const totalCount = await BlogsCollection.countDocuments({name:  {$regex: queryData.searchNameTerm , $options: 'i'}})
         const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
         const page = Number(queryData.pageNumber)
