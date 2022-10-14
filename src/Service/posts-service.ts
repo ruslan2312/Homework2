@@ -1,6 +1,6 @@
 import {PostsRepository} from "../Repository/posts-repository";
 import {BlogsCollection} from "../Repository/db";
-import {PostsType} from "../Type/Type";
+import {PostsType} from "../Common/Type";
 
 export const PostsService = {
     async findPost(title: string | null | undefined): Promise<PostsType[]> {

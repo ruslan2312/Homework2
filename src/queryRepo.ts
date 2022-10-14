@@ -6,7 +6,7 @@
 //         return []
 //     }
 // }
-// Type dbPosts = {
+// Common dbPosts = {
 //     _id: object,
 //     id: string,
 //     title: string,
@@ -16,7 +16,7 @@
 //     blogName: string,
 //     createdAt: string
 // }
-// Type Post = {
+// Common Post = {
 //     id: string,
 //     title: string,
 //     shortDescription: string,

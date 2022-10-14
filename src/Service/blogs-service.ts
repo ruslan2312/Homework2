@@ -1,7 +1,7 @@
 import {BlogsRepository} from "../Repository/blogs-repository";
 import {PostsRepository} from "../Repository/posts-repository";
 import {BlogsCollection} from "../Repository/db";
-import {PostsType,BlogsType,PaginationQueryType} from "../Type/Type";
+import {PostsType,BlogsType,PaginationQueryType} from "../Common/Type";
 
 export const BlogsService = {
     async findBlog(query: PaginationQueryType): Promise<BlogsType[]> {

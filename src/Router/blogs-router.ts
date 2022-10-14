@@ -1,30 +1,20 @@
 import {Request, Response, Router} from "express";
-import {body} from 'express-validator';
 import {inputValidationMiddleware} from "../Middleware/input-validation-middleware";
 import {mwBasicAuth} from "../Middleware/authorization-middleware";
 import {BlogsService} from "../Service/blogs-service";
-import {PostsType, BlogsType,PaginationQueryType} from "../Type/Type";
-
+import {PostsType, BlogsType} from "../Common/Type";
+import {getPaginationData} from "../Common/GetBlogPaginationData";
 import {
-    blogNameValidation,
-    contentValidation,
+    titleValidation,
     shortDescriptionValidation,
-    titleValidation
-} from "./posts-router";
+    contentValidation,
+    blogNameValidation,
+    nameValidation,
+    youtubeUrlValidation
+} from "../Common/validator";
 
 export const BlogsRouter = Router()
 
-const nameValidation = body('name').trim().isLength({min: 1, max: 15})
-const youtubeUrlValidation = body('youtubeUrl').isURL().isLength({min: 1, max: 100})
-
-const getPaginationData = (query: any): PaginationQueryType => {
-    const searchNameTerm = query.searchNameTerm ? query.searchNameTerm : "";
-    const pageSize = isNaN(query.pageSize) ? 10 : query.pageSize;
-    const pageNumber = isNaN(query.pageNumber) ? 1 : query.pageNumber;
-    const sortBy = query.sortBy === "name" ? "name" : "createdAt";
-    const sortDirection = query.sortDirection === "asc" ? "asc" : "desc";
-    return {searchNameTerm, pageSize, pageNumber, sortBy, sortDirection}
-}
 
 BlogsRouter.get('/', async (req: Request, res: Response) => {
     // const findBlogs: BlogsType[] = await BlogsService.findBlog(req.query.name?.toString())

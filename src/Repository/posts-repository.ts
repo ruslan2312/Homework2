@@ -1,5 +1,5 @@
 import {PostsCollection} from "./db";
-import {PostsType} from "../Type/Type";
+import {PostsType} from "../Common/Type";
 
 
 export const posts: PostsType [] = [];
