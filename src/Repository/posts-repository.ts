@@ -1,4 +1,4 @@
-import { PostsCollection} from "./db";
+import {PostsCollection} from "./db";
 import {PostPaginationQueryType, PostsType} from "../Common/Type";
 
 export const posts: PostsType [] = [];
@@ -6,6 +6,9 @@ export const posts: PostsType [] = [];
 export const PostsRepository = {
     async findPost(queryData: PostPaginationQueryType): Promise<any> {
         let filter: any = {}
+        if (queryData.searchNameTerm) {
+            filter.name = {$regex: queryData.searchNameTerm, $options: 'i'}
+        }
         const totalCount = await PostsCollection.countDocuments({
             title: {
                 $regex: queryData.searchNameTerm,

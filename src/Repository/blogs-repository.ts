@@ -7,7 +7,7 @@ export const BlogsRepository = {
     async findBlog(queryData: BlogPaginationQueryType): Promise<any> {
         let filter: any = {}
         if (queryData.searchNameTerm) {
-            filter.name = { $regex: queryData.searchNameTerm, $options: 'i'}
+            filter.name = {$regex: queryData.searchNameTerm, $options: 'i'}
         }
         const totalCount = await BlogsCollection.countDocuments({name:  {$regex: queryData.searchNameTerm , $options: 'i'}})
         const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
