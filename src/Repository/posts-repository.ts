@@ -6,6 +6,7 @@ export const posts: PostsType [] = [];
 export const PostsRepository = {
     async findPost(queryData: PostPaginationQueryType): Promise<any> {
         let filter: any = {}
+        debugger
         if (queryData.searchNameTerm) {
             filter.title = {$regex: queryData.searchNameTerm, $options: 'i'}
         }
