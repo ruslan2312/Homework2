@@ -15,7 +15,6 @@ import {
 
 export const BlogsRouter = Router()
 
-
 BlogsRouter.get('/', async (req: Request, res: Response) => {
     const queryData = getBlogPaginationData(req.query);
     const findBlogs: BlogsType[] = await BlogsService.findBlog(queryData);

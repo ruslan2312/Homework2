@@ -1,7 +1,6 @@
 import { PostsCollection} from "./db";
 import {PostPaginationQueryType, PostsType} from "../Common/Type";
 
-
 export const posts: PostsType [] = [];
 
 export const PostsRepository = {

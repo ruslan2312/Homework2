@@ -3,6 +3,7 @@ import {inputValidationMiddleware} from "../Middleware/input-validation-middlewa
 import {mwBasicAuth} from "../Middleware/authorization-middleware";
 import {PostsService} from "../Service/posts-service";
 import {PostsType} from "../Common/Type";
+import {getPostPaginationData} from "../Common/GetBlogPaginationData";
 import {
     titleValidation,
     shortDescriptionValidation,
@@ -10,11 +11,8 @@ import {
     blogIdValidation,
     blogNameValidation
 } from "../Common/validator";
-import {getPostPaginationData} from "../Common/GetBlogPaginationData";
-
 
 export const PostsRouter = Router()
-
 
 PostsRouter.get('/', async (req: Request, res: Response) => {
     const queryData = getPostPaginationData(req.query)
@@ -38,7 +36,6 @@ PostsRouter.delete('/:id', mwBasicAuth, async (req: Request, res: Response) => {
         res.send(404)
     }
 })
-
 PostsRouter.put('/:id', mwBasicAuth, titleValidation, shortDescriptionValidation, contentValidation,
     blogIdValidation, blogNameValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
         const isUpdate = await PostsService.updatePost(req.params.id, req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
@@ -49,7 +46,6 @@ PostsRouter.put('/:id', mwBasicAuth, titleValidation, shortDescriptionValidation
             res.send(404)
         }
     })
-
 PostsRouter.post('/', mwBasicAuth, titleValidation, shortDescriptionValidation, contentValidation,
     blogIdValidation, blogNameValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
         const newPost = await PostsService.createPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
