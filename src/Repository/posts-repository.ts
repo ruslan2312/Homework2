@@ -7,7 +7,7 @@ export const PostsRepository = {
     async findPost(queryData: PostPaginationQueryType): Promise<any> {
         let filter: any = {}
         if (queryData.searchNameTerm) {
-            filter.name = {$regex: queryData.searchNameTerm, $options: 'i'}
+            filter.title = {$regex: queryData.searchNameTerm, $options: 'i'}
         }
         const totalCount = await PostsCollection.countDocuments({
             title: {
