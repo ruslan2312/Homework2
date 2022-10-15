@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv"
 import express from "express"
-import {BlogsRouter} from "./Router/blogs-router";
-import {PostsRouter} from "./Router/posts-router";
-import {allDelete} from "./Router/all-delete";
-import {runDb} from "./Repository/db";
+import {BlogsRouter} from "./Router/Blogs-router";
+import {PostsRouter} from "./Router/Posts-router";
+import {allDelete} from "./Router/All-delete";
+import {runDb} from "./Repository/Db";
 
 dotenv.config()
 

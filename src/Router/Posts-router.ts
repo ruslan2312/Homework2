@@ -1,16 +1,16 @@
 import {Request, Response, Router} from "express";
-import {inputValidationMiddleware} from "../Middleware/input-validation-middleware";
-import {mwBasicAuth} from "../Middleware/authorization-middleware";
-import {PostsService} from "../Service/posts-service";
+import {inputValidationMiddleware} from "../Middleware/Input-validation-middleware";
+import {mwBasicAuth} from "../Middleware/Authorization-middleware";
+import {PostsService} from "../Service/Posts-service";
 import {PostsType} from "../Common/Type";
-import {getPostPaginationData} from "../Common/GetBlogPaginationData";
+import {getPostPaginationData} from "../Common/GetPaginationData";
 import {
     titleValidation,
     shortDescriptionValidation,
     contentValidation,
     blogIdValidation,
     blogNameValidation
-} from "../Common/validator";
+} from "../Common/Validator";
 
 export const PostsRouter = Router()
 

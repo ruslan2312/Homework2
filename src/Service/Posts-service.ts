@@ -1,5 +1,5 @@
-import {PostsRepository} from "../Repository/posts-repository";
-import {BlogsCollection} from "../Repository/db";
+import {PostsRepository} from "../Repository/Posts-repository";
+import {BlogsCollection} from "../Repository/Db";
 import {PostPaginationQueryType, PostsType} from "../Common/Type";
 
 export const PostsService = {

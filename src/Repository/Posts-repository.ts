@@ -1,4 +1,4 @@
-import {PostsCollection} from "./db";
+import {PostsCollection} from "./Db";
 import {PostPaginationQueryType, PostsType} from "../Common/Type";
 
 export const posts: PostsType [] = [];

@@ -1,9 +1,9 @@
 import {Request, Response, Router} from "express";
-import {inputValidationMiddleware} from "../Middleware/input-validation-middleware";
-import {mwBasicAuth} from "../Middleware/authorization-middleware";
-import {BlogsService} from "../Service/blogs-service";
+import {inputValidationMiddleware} from "../Middleware/Input-validation-middleware";
+import {mwBasicAuth} from "../Middleware/Authorization-middleware";
+import {BlogsService} from "../Service/Blogs-service";
 import {PostsType, BlogsType} from "../Common/Type";
-import {getBlogPaginationData} from "../Common/GetBlogPaginationData";
+import {findPostByIdTypePaginationData, getPaginationData} from "../Common/GetPaginationData";
 import {
     titleValidation,
     shortDescriptionValidation,
@@ -11,12 +11,12 @@ import {
     blogNameValidation,
     nameValidation,
     youtubeUrlValidation
-} from "../Common/validator";
+} from "../Common/Validator";
 
 export const BlogsRouter = Router()
 
 BlogsRouter.get('/', async (req: Request, res: Response) => {
-    const queryData = getBlogPaginationData(req.query);
+    const queryData = getPaginationData(req.query);
     const findBlogs: BlogsType[] = await BlogsService.findBlog(queryData);
     res.status(200).send(findBlogs)
 })
@@ -29,10 +29,12 @@ BlogsRouter.get('/:id',
             res.send(404)
         }
     })
-BlogsRouter.get('/:id/posts',
+BlogsRouter.get('/:blogId/posts',
     async (req: Request, res: Response) => {
-        console.log(req.params.id)
-        let post: PostsType | null = await BlogsService.findBlogAndPostByID(req.params.id)
+        const queryData = findPostByIdTypePaginationData(req.query)
+        console.log(req.params.blogId)
+
+        const post: PostsType[] = await BlogsService.findBlogAndPostByID(queryData,req.params.blogId)
         if (post) {
             res.status(200).send(post)
         } else {

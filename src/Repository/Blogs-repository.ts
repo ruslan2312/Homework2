@@ -1,5 +1,5 @@
-import {BlogsCollection, PostsCollection} from "./db";
-import {BlogsType, BlogPaginationQueryType, PostsType} from "../Common/Type";
+import {BlogsCollection, PostsCollection} from "./Db";
+import {BlogsType, BlogPaginationQueryType, PostsType, FindPostByIdPaginationQueryType} from "../Common/Type";
 
 export const blogs: BlogsType [] = [];
 
@@ -9,7 +9,12 @@ export const BlogsRepository = {
         if (queryData.searchNameTerm) {
             filter.name = {$regex: queryData.searchNameTerm, $options: 'i'}
         }
-        const totalCount = await BlogsCollection.countDocuments({name:  {$regex: queryData.searchNameTerm , $options: 'i'}})
+        const totalCount = await BlogsCollection.countDocuments({
+            name: {
+                $regex: queryData.searchNameTerm,
+                $options: 'i'
+            }
+        })
         const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
         const page = Number(queryData.pageNumber)
         const pageSize = Number(queryData.pageSize)
@@ -22,16 +27,31 @@ export const BlogsRepository = {
         return Promise.resolve({pagesCount, page, pageSize, totalCount, items,})
     },
     async findBlogByID(id: string): Promise<BlogsType | null> {
-        return await BlogsCollection.findOne({id: id}, {projection: {_id: 0} });
+        return await BlogsCollection.findOne({id: id}, {projection: {_id: 0}});
     },
-    async findBlogAndPostByID(id: string): Promise<PostsType | null> {
-        let post: PostsType | null = await PostsCollection.findOne({blogId: id}, {projection: {_id: 0}})
-        if (post) {
-            return post
-        } else {
-            return null
+
+    async findBlogAndPostByID(queryData: FindPostByIdPaginationQueryType, blogId: string): Promise<any> {
+        let filter: any = {}
+        if (blogId) {
+            filter.blogId = {$regex: blogId, $options: 'i'}
         }
+        const totalCount = await PostsCollection.countDocuments({
+            blogId: {
+                $regex: blogId,
+                $options: 'i'
+            }
+        })
+        const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
+        const page = Number(queryData.pageNumber)
+        const pageSize = Number(queryData.pageSize)
+        const items = await PostsCollection.find({blogId: blogId}, {projection: {_id: 0}})
+            .sort(queryData.sortBy, queryData.sortDirection)
+            .skip((page - 1) * pageSize)
+            .limit(pageSize)
+            .toArray()
+        return Promise.resolve({pagesCount, page, pageSize, totalCount, items})
     },
+
     async deleteBlog(id: string): Promise<boolean> {
         const result = await BlogsCollection.deleteOne({id: id})
         return result.deletedCount === 1

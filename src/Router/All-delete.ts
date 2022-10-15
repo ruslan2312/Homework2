@@ -1,6 +1,6 @@
 import {Request, Response, Router} from "express";
-import {PostsService} from "../Service/posts-service";
-import {BlogsService} from "../Service/blogs-service";
+import {PostsService} from "../Service/Posts-service";
+import {BlogsService} from "../Service/Blogs-service";
 
 export const allDelete = Router();
 

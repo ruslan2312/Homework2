@@ -27,3 +27,12 @@ export type PostPaginationQueryType = {
     sortBy: string;
     sortDirection: "asc" | "desc";
 }
+
+export type FindPostByIdPaginationQueryType = {
+    blogId: string;
+    searchNameTerm: string;
+    pageSize: number;
+    pageNumber: number;
+    sortBy: string;
+    sortDirection: "asc" | "desc";
+}

@@ -1,7 +1,7 @@
-import {BlogsRepository} from "../Repository/blogs-repository";
-import {PostsRepository} from "../Repository/posts-repository";
-import {BlogsCollection} from "../Repository/db";
-import {PostsType,BlogsType,BlogPaginationQueryType} from "../Common/Type";
+import {BlogsRepository} from "../Repository/Blogs-repository";
+import {PostsRepository} from "../Repository/Posts-repository";
+import {BlogsCollection} from "../Repository/Db";
+import {PostsType, BlogsType, BlogPaginationQueryType, FindPostByIdPaginationQueryType} from "../Common/Type";
 
 export const BlogsService = {
     async findBlog(query: BlogPaginationQueryType): Promise<BlogsType[]> {
@@ -10,8 +10,8 @@ export const BlogsService = {
     async findBlogByID(id: string): Promise<BlogsType | null> {
         return BlogsRepository.findBlogByID(id)
     },
-    async findBlogAndPostByID(id: string): Promise<PostsType | null> {
-        return await BlogsRepository.findBlogAndPostByID(id)
+    async findBlogAndPostByID(query: FindPostByIdPaginationQueryType, blogId: string): Promise<PostsType[] | any> {
+        return await BlogsRepository.findBlogAndPostByID(query,blogId)
     },
     async deleteBlog(id: string): Promise<boolean> {
         return await BlogsRepository.deleteBlog(id)
