@@ -22,9 +22,9 @@ BlogsRouter.get('/', async (req: Request, res: Response) => {
 })
 BlogsRouter.get('/:id',
     async (req: Request, res: Response) => {
-        let video: BlogsType | null = await BlogsService.findBlogByID(req.params.id)
-        if (video) {
-            res.status(200).send(video)
+        let post: BlogsType | null = await BlogsService.findBlogByID(req.params.id)
+        if (post) {
+            res.status(200).send(post)
         } else {
             res.send(404)
         }
@@ -32,9 +32,7 @@ BlogsRouter.get('/:id',
 BlogsRouter.get('/:blogId/posts',
     async (req: Request, res: Response) => {
         const queryData = findPostByIdTypePaginationData(req.query)
-        console.log(req.params.blogId)
-
-        const post: PostsType[] = await BlogsService.findBlogAndPostByID(queryData,req.params.blogId)
+        const post: PostsType[] = await BlogsService.findBlogAndPostByID(queryData, req.params.blogId)
         if (post) {
             res.status(200).send(post)
         } else {

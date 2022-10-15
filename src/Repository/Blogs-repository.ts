@@ -30,7 +30,7 @@ export const BlogsRepository = {
         return await BlogsCollection.findOne({id: id}, {projection: {_id: 0}});
     },
 
-    async findBlogAndPostByID(queryData: FindPostByIdPaginationQueryType, blogId: string): Promise<any> {
+    async findBlogAndPostByID(queryData: FindPostByIdPaginationQueryType, blogId: string): Promise<any | null> {
         let filter: any = {}
         if (blogId) {
             filter.blogId = {$regex: blogId, $options: 'i'}
@@ -49,6 +49,10 @@ export const BlogsRepository = {
             .skip((page - 1) * pageSize)
             .limit(pageSize)
             .toArray()
+        debugger
+        if (await PostsCollection.findOne({blogId: blogId}) === null) {
+            return null
+        }
         return Promise.resolve({pagesCount, page, pageSize, totalCount, items})
     },
 
