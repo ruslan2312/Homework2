@@ -33,6 +33,7 @@ export const UsersService = {
         if (user.passwordHash !== passwordHash) {
             return false
         }
+        return true
     },
     async _generateHash(password: string, salt: string) {
         return await bcrypt.hash(password, salt)
