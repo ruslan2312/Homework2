@@ -5,6 +5,7 @@ import {PostsRouter} from "./Router/Posts-router";
 import {allDelete} from "./Router/All-delete";
 import {runDb} from "./Repository/Db";
 import {UsersRouter} from "./Router/Users-router";
+import {AuthRouter} from "./Router/Auth-router";
 
 dotenv.config()
 
@@ -16,6 +17,7 @@ app.use(express.json())
 app.use('/blogs', BlogsRouter)
 app.use('/posts', PostsRouter)
 app.use('/users', UsersRouter)
+app.use('/auth', AuthRouter)
 app.use('/testing/all-data', allDelete)
 const startApp = async () => {
     await runDb()
