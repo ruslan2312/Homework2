@@ -11,7 +11,7 @@ UsersRouter.get('/', async (req: Request, res: Response) => {
 })
 
 UsersRouter.post('/', async (req: Request, res: Response) => {
-    const newUser = UsersService.createUser(req.body.login, req.body.email, req.body.password)
+    const newUser  =  await UsersService.createUser(req.body.login, req.body.email, req.body.password)
     res.status(204).send(newUser)
 })
 UsersRouter.delete('/', async (req: Request, res: Response) => {
