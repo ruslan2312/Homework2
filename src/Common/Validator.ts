@@ -9,3 +9,8 @@ export const blogNameValidation = body('blogName').trim().isLength({min: 1, max:
 // Blogs
 export const nameValidation = body('name').trim().isLength({min: 1, max: 15})
 export const youtubeUrlValidation = body('youtubeUrl').isURL().isLength({min: 1, max: 100})
+
+// Users
+export const usersEmailValidation = body('title').trim().isLength({min: 1, max: 30})
+export const usersPasswordValidation = body('title').trim().isLength({min: 1, max: 30})
+export const usersLoginValidation = body('title').trim().isLength({min: 1, max: 30})
