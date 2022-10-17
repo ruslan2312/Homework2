@@ -1,32 +1,31 @@
 import {UserType} from "../Common/Type";
 import bcrypt from 'bcrypt'
 import {UsersRepository} from "../Repository/Users-repository";
+import {debug} from "util";
 
 export const UsersService = {
     async findUser() {
 
     },
     async createUser(login: string, email: string, password: string): Promise<UserType> {
+        debugger
         const passwordSalt = await bcrypt.genSalt(10);
         const passwordHash = await this._generateHash(password, passwordSalt)
+        debugger
         const newUser: UserType = {
             id: new Date().valueOf().toString(),
-            login,
-            email,
+            userName: login,
+            email: email,
             passwordHash,
             passwordSalt,
             createdAt: new Date().toISOString()
         }
         return UsersRepository.createUser(newUser)
     },
-    async deleteUser() {
-        return 'deleteUser'
-    },
-    async deleteAllUsers() {
-        await UsersRepository.deleteAllUsers()
-    },
+
 
     async checkCredentials(loginOrEmail: string, password: string) {
+        debugger
         const user = await UsersRepository.findByLoginOrEmail(loginOrEmail)
         if (!user) return false
         const passwordHash = await this._generateHash(password, user.passwordSalt)
@@ -37,5 +36,13 @@ export const UsersService = {
     },
     async _generateHash(password: string, salt: string) {
         return await bcrypt.hash(password, salt)
-    }
+    },
+
+
+    async deleteUser() {
+        return 'deleteUser'
+    },
+    async deleteAllUsers() {
+        await UsersRepository.deleteAllUsers()
+    },
 }
