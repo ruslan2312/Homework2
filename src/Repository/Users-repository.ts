@@ -7,22 +7,24 @@ export const UsersRepository = {
         debugger
         if (queryData.searchLoginTerm || queryData.searchEmailTerm) {
             filter.login = {$regex: queryData.searchLoginTerm, $options: 'i'}
-            filter.email = {$regex: queryData.searchEmailTerm, $options: 'i'}
+            // filter.email = {$regex: queryData.searchEmailTerm, $options: 'i'}
         }
         const totalCount = await UsersCollection.countDocuments({
-            $or: [{login: filter.login}, {email: filter.email}],
+            login: {
+                $regex: queryData.searchLoginTerm,
+                $options: 'i'
+            },
         })
         debugger
         const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
         const page = Number(queryData.pageNumber)
         const pageSize = Number(queryData.pageSize)
-        debugger
-        const items = await UsersCollection.find({$or: [{login: filter.login}, {email: filter.email}]}, {
+        const items = await UsersCollection.find(filter, {
             projection: {
                 _id: 0,
                 passwordHash: 0,
                 passwordSalt: 0,
-            },
+            } ,
         })
             .sort(queryData.sortBy, queryData.sortDirection)
             .skip((page - 1) * pageSize)
