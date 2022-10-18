@@ -33,8 +33,6 @@ export const UsersService = {
         const passwordHash = await this._generateHash(password, user.passwordSalt)
         debugger
         return user.passwordHash === passwordHash;
-
-
     },
     async _generateHash(password: string, salt: string) {
         return await bcrypt.hash(password, salt)
