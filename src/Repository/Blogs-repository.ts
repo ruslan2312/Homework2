@@ -18,7 +18,6 @@ export const BlogsRepository = {
         const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
         const page = Number(queryData.pageNumber)
         const pageSize = Number(queryData.pageSize)
-        //todo pagesCount, refactoring...de
         const items = await BlogsCollection.find(filter, {projection: {_id: 0}})
             .sort(queryData.sortBy, queryData.sortDirection)
             .skip((page - 1) * pageSize)

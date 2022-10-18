@@ -3,7 +3,7 @@ import {inputValidationMiddleware} from "../Middleware/Input-validation-middlewa
 import {mwBasicAuth} from "../Middleware/Authorization-middleware";
 import {PostsService} from "../Service/Posts-service";
 import {PostsType} from "../Common/Type";
-import {getPostPaginationData} from "../Common/GetBlogPaginationData";
+import {getPostPaginationData} from "../Common/PaginationData";
 import {
     titleValidation,
     shortDescriptionValidation,

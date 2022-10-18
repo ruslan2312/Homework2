@@ -4,12 +4,14 @@ import {usersEmailValidation, usersLoginValidation, usersPasswordValidation} fro
 import {mwBasicAuth} from "../Middleware/Authorization-middleware";
 import {UserType} from "../Common/Type";
 import {inputValidationMiddleware} from "../Middleware/Input-validation-middleware";
+import {findUsersByIdTypePaginationData} from "../Common/PaginationData";
 
 
 export const UsersRouter = Router()
 
 UsersRouter.get('/', async (req: Request, res: Response) => {
-    const findUser: UserType[] = await UsersService.findUsers()
+    const queryData = findUsersByIdTypePaginationData(req.query)
+    const findUser: UserType[] = await UsersService.findUsers(queryData)
     res.status(200).send(findUser)
 })
 debugger
@@ -18,7 +20,7 @@ UsersRouter.post('/', usersEmailValidation, usersPasswordValidation, usersLoginV
     console.log(newUser)
     res.status(201).send(newUser)
 })
-UsersRouter.delete('/:id', async (req: Request, res: Response) => {
+UsersRouter.delete('/:id', mwBasicAuth, inputValidationMiddleware,   async (req: Request, res: Response) => {
     const deleteUsers = await UsersService.deleteUser(req.params.id)
     if (deleteUsers) {
         res.send(204)

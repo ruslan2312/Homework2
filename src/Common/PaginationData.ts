@@ -1,6 +1,11 @@
-import {BlogPaginationQueryType, FindPostByIdPaginationQueryType, PostPaginationQueryType} from "./Type";
+import {
+    BlogPaginationQueryType,
+    FindPostByIdPaginationQueryType,
+    UsersPaginationQueryType,
+    PostPaginationQueryType
+} from "./Type";
 
-export const getBlogPaginationData = (query: any): BlogPaginationQueryType => {
+export const paginationData = (query: any): BlogPaginationQueryType => {
     const searchNameTerm = query.searchNameTerm ? query.searchNameTerm : "";
     const pageSize = isNaN(query.pageSize) ? 10 : query.pageSize;
     const pageNumber = isNaN(query.pageNumber) ? 1 : query.pageNumber;
@@ -25,4 +30,13 @@ export const findPostByIdTypePaginationData = (query: any): FindPostByIdPaginati
     const sortBy = query.sortBy === "blogName" ? "blogName" : "createdAt";
     const sortDirection = query.sortDirection === "asc" ? "asc" : "desc";
     return {searchNameTerm, pageSize, pageNumber, blogId, sortBy, sortDirection,}
+}
+export const findUsersByIdTypePaginationData = (query: any): UsersPaginationQueryType => {
+    const searchLoginTerm = query.searchLoginTerm ? query.searchLoginTerm : "";
+    const searchEmailTerm = query.searchEmailTerm ? query.searchLoginTerm : "";
+    const pageSize = isNaN(query.pageSize) ? 10 : query.pageSize;
+    const pageNumber = isNaN(query.pageNumber) ? 1 : query.pageNumber;
+    const sortBy = query.sortBy === "name" ? "name" : "createdAt";
+    const sortDirection = query.sortDirection === "asc" ? "asc" : "desc";
+    return {searchLoginTerm, searchEmailTerm, pageSize, pageNumber, sortBy, sortDirection,}
 }

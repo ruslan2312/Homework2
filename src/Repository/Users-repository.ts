@@ -1,26 +1,42 @@
 import {UsersCollection} from "./Db";
-import {UserType} from "../Common/Type";
+import {UsersPaginationQueryType, UserType} from "../Common/Type";
 
 export const UsersRepository = {
-    async findByLoginOrEmail(loginOrEmail: string) {
-        return await UsersCollection.findOne({$or: [{email: loginOrEmail}, {userName: loginOrEmail}]})
-    },
-    async findUsers(): Promise<any> {
+    async findUsers(queryData: UsersPaginationQueryType): Promise<any> {
         let filter: any = {}
+        debugger
+        if (queryData.searchLoginTerm) {
+            filter.login = {$regex: queryData.searchLoginTerm, $options: 'i'}
+        }
+        const totalCount = await UsersCollection.countDocuments({
+            login: {
+                $regex: queryData.searchLoginTerm,
+                $options: 'i'
+            }
+        })
+        debugger
+        const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
+        const page = Number(queryData.pageNumber)
+        const pageSize = Number(queryData.pageSize)
         const items = await UsersCollection.find(filter, {
             projection: {
                 _id: 0,
                 passwordHash: 0,
                 passwordSalt: 0
             }
-        }).toArray();
-
-        return Promise.resolve(items)
+        })
+            .sort(queryData.sortBy, queryData.sortDirection)
+            .skip((page - 1) * pageSize)
+            .limit(pageSize)
+            .toArray()
+        return Promise.resolve({pagesCount, page, pageSize, totalCount, items,})
+    },
+    async findByLoginOrEmail(loginOrEmail: string) {
+        return await UsersCollection.findOne({$or: [{email: loginOrEmail}, {userName: loginOrEmail}]})
     },
     async createUser(user: UserType): Promise<any> {
         await UsersCollection.insertOne({...user});
         return Promise.resolve({...user, passwordHash: undefined, passwordSalt: undefined})
-
     },
     async deleteUser(id: string): Promise<boolean> {
         const result = await UsersCollection.deleteOne({id: id})

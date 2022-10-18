@@ -36,13 +36,19 @@ export type FindPostByIdPaginationQueryType = {
     sortBy: string,
     sortDirection: "asc" | "desc";
 }
-
+export type UsersPaginationQueryType = {
+    searchLoginTerm: string ,
+    searchEmailTerm: string ,
+    pageSize: number,
+    pageNumber: number,
+    sortBy: string,
+    sortDirection: "asc" | "desc";
+}
 export type UserType = {
     id: string,
     login: string,
     email: string,
     createdAt: string,
-    passwordHash: string ,
-    passwordSalt: string ,
-
+    passwordHash: string,
+    passwordSalt: string,
 }

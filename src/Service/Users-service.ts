@@ -1,10 +1,10 @@
-import {UserType} from "../Common/Type";
+import {UsersPaginationQueryType, UserType} from "../Common/Type";
 import bcrypt from 'bcrypt'
 import {UsersRepository} from "../Repository/Users-repository";
 
 export const UsersService = {
-    async findUsers(): Promise<UserType[]> {
-        return await UsersRepository.findUsers();
+    async findUsers(query: UsersPaginationQueryType): Promise<UserType[]> {
+        return await UsersRepository.findUsers(query);
     },
     async createUser(login: string, email: string, password: string): Promise<UserType> {
         const passwordSalt = await bcrypt.genSalt(10);
