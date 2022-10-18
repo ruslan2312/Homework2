@@ -1,17 +1,15 @@
-import {UserType} from "../Common/Type";
+import { UserType} from "../Common/Type";
 import bcrypt from 'bcrypt'
 import {UsersRepository} from "../Repository/Users-repository";
 import {debug} from "util";
 
 export const UsersService = {
-    async findUser() {
-
+    async findUsers():Promise<UserType[]> {
+        return await UsersRepository.findUsers();
     },
     async createUser(login: string, email: string, password: string): Promise<UserType> {
-        debugger
         const passwordSalt = await bcrypt.genSalt(10);
         const passwordHash = await this._generateHash(password, passwordSalt)
-        debugger
         const newUser: UserType = {
             id: new Date().valueOf().toString(),
             userName: login,
@@ -19,8 +17,8 @@ export const UsersService = {
             passwordHash,
             passwordSalt,
             createdAt: new Date().toISOString()
-        }
-        return UsersRepository.createUser(newUser)
+            }
+            return UsersRepository.createUser(newUser)
     },
 
 

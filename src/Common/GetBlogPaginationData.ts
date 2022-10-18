@@ -1,6 +1,6 @@
 import {BlogPaginationQueryType, FindPostByIdPaginationQueryType, PostPaginationQueryType} from "./Type";
 
-export const getPaginationData = (query: any): BlogPaginationQueryType => {
+export const getBlogPaginationData = (query: any): BlogPaginationQueryType => {
     const searchNameTerm = query.searchNameTerm ? query.searchNameTerm : "";
     const pageSize = isNaN(query.pageSize) ? 10 : query.pageSize;
     const pageNumber = isNaN(query.pageNumber) ? 1 : query.pageNumber;

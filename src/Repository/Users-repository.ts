@@ -3,7 +3,7 @@ import {UserType} from "../Common/Type";
 
 export const UsersRepository = {
 
-    async createUser(user: UserType): Promise<UserType> {
+    async createUser(user: UserType): Promise<any> {
         const result = await UsersCollection.insertOne(user)
         return user
     },
@@ -13,5 +13,12 @@ export const UsersRepository = {
     async deleteAllUsers(): Promise<boolean> {
         const result = await UsersCollection.deleteMany({})
         return result.deletedCount === 1
+    },
+
+    async findUsers(): Promise<any> {
+        let filter: any = {}
+
+        const items = await UsersCollection.find(filter, {projection: {_id: 0}}).toArray();
+        return Promise.resolve({items})
     },
 }
