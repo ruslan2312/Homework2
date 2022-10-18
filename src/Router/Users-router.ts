@@ -16,7 +16,7 @@ debugger
 UsersRouter.post('/', usersEmailValidation, usersPasswordValidation, usersLoginValidation, mwBasicAuth,inputValidationMiddleware, async (req: Request, res: Response) => {
     const newUser = await UsersService.createUser(req.body.login, req.body.email, req.body.password)
     console.log(newUser)
-    res.status(204).send(newUser)
+    res.status(201).send(newUser)
 })
 UsersRouter.delete('/', async (req: Request, res: Response) => {
     const deleteUsers = UsersService.deleteUser()
