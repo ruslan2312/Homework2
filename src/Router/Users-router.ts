@@ -4,13 +4,13 @@ import {usersEmailValidation, usersLoginValidation, usersPasswordValidation} fro
 import {mwBasicAuth} from "../Middleware/Authorization-middleware";
 import {UserType} from "../Common/Type";
 import {inputValidationMiddleware} from "../Middleware/Input-validation-middleware";
-import {findUsersByIdTypePaginationData} from "../Common/PaginationData";
+import {UsersPaginationData} from "../Common/PaginationData";
 
 
 export const UsersRouter = Router()
 
 UsersRouter.get('/', async (req: Request, res: Response) => {
-    const queryData = findUsersByIdTypePaginationData(req.query)
+    const queryData = UsersPaginationData(req.query)
     const findUser: UserType[] = await UsersService.findUsers(queryData)
     res.status(200).send(findUser)
 })

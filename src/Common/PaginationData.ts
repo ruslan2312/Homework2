@@ -31,12 +31,12 @@ export const findPostByIdTypePaginationData = (query: any): FindPostByIdPaginati
     const sortDirection = query.sortDirection === "asc" ? "asc" : "desc";
     return {searchNameTerm, pageSize, pageNumber, blogId, sortBy, sortDirection,}
 }
-export const findUsersByIdTypePaginationData = (query: any): UsersPaginationQueryType => {
+export const UsersPaginationData = (query: any): UsersPaginationQueryType => {
     const searchLoginTerm = query.searchLoginTerm ? query.searchLoginTerm : "";
     const searchEmailTerm = query.searchEmailTerm ? query.searchEmailTerm : "";
     const pageSize = isNaN(query.pageSize) ? 10 : query.pageSize;
     const pageNumber = isNaN(query.pageNumber) ? 1 : query.pageNumber;
-    const sortBy = query.sortBy === "name" ? "name" : "createdAt";
+    const sortBy = query.sortBy === "login" ? "login" : "createdAt";
     const sortDirection = query.sortDirection === "asc" ? "asc" : "desc";
     return {searchLoginTerm, searchEmailTerm, pageSize, pageNumber, sortBy, sortDirection,}
 }
