@@ -1,7 +1,6 @@
 import { UserType} from "../Common/Type";
 import bcrypt from 'bcrypt'
 import {UsersRepository} from "../Repository/Users-repository";
-import {debug} from "util";
 
 export const UsersService = {
     async findUsers():Promise<UserType[]> {
@@ -36,11 +35,10 @@ export const UsersService = {
         return await bcrypt.hash(password, salt)
     },
 
-
-    async deleteUser() {
-        return 'deleteUser'
+    async deleteUser(id:string): Promise<boolean> {
+        return await UsersRepository.deleteUser(id)
     },
-    async deleteAllUsers() {
-        await UsersRepository.deleteAllUsers()
+    async deleteAllUsers(): Promise<boolean> {
+        return  UsersRepository.deleteAllUsers()
     },
 }

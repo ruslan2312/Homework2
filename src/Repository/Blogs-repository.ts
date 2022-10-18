@@ -56,10 +56,7 @@ export const BlogsRepository = {
         return Promise.resolve({pagesCount, page, pageSize, totalCount, items})
     },
 
-    async deleteBlog(id: string): Promise<boolean> {
-        const result = await BlogsCollection.deleteOne({id: id})
-        return result.deletedCount === 1
-    },
+
     async updateBlog(id: string, name: string, youtubeUrl: string): Promise<boolean> {
         const result = await BlogsCollection.updateOne({id: id}, {$set: {name: name, youtubeUrl: youtubeUrl}})
         return result.matchedCount === 1
@@ -71,6 +68,10 @@ export const BlogsRepository = {
     async createPostByBlog(newPost: PostsType): Promise<PostsType> {
         await PostsCollection.insertOne({...newPost});
         return newPost
+    },
+    async deleteBlog(id: string): Promise<boolean> {
+        const result = await BlogsCollection.deleteOne({id: id})
+        return result.deletedCount === 1
     },
     async deleteAllBlogger(): Promise<boolean> {
         const result = await BlogsCollection.deleteMany({})

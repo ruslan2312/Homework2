@@ -11,13 +11,7 @@ export const BlogsService = {
         return BlogsRepository.findBlogByID(id)
     },
     async findBlogAndPostByID(query: FindPostByIdPaginationQueryType, blogId: string): Promise<PostsType[] | any> {
-        return await BlogsRepository.findBlogAndPostByID(query,blogId)
-    },
-    async deleteBlog(id: string): Promise<boolean> {
-        return await BlogsRepository.deleteBlog(id)
-    },
-    async updateBlog(id: string, name: string, youtubeUrl: string): Promise<boolean> {
-        return await BlogsRepository.updateBlog(id, name, youtubeUrl)
+        return await BlogsRepository.findBlogAndPostByID(query, blogId)
     },
     async createBlog(name: string, youtubeUrl: string): Promise<BlogsType> {
         const newBlog = {
@@ -44,6 +38,12 @@ export const BlogsService = {
             return await PostsRepository.createPost(newPost)
         }
         return null
+    },
+    async updateBlog(id: string, name: string, youtubeUrl: string): Promise<boolean> {
+        return await BlogsRepository.updateBlog(id, name, youtubeUrl)
+    },
+    async deleteBlog(id: string): Promise<boolean> {
+        return await BlogsRepository.deleteBlog(id)
     },
     async deleteAllBlogger(): Promise<boolean> {
         return BlogsRepository.deleteAllBlogger()
