@@ -5,7 +5,8 @@ export const UsersRepository = {
 
     async createUser(user: UserType): Promise<any> {
         const result = await UsersCollection.insertOne({...user})
-        return user
+        return Promise.resolve({...user, passwordHash: undefined, passwordSalt: undefined})
+
     },
     async findByLoginOrEmail(loginOrEmail: string) {
         return await UsersCollection.findOne({$or: [{email: loginOrEmail}, {userName: loginOrEmail}]})
@@ -18,6 +19,7 @@ export const UsersRepository = {
     async findUsers(): Promise<any> {
         let filter: any = {}
         const items = await UsersCollection.find(filter, {projection: {_id: 0}}).toArray();
-        return Promise.resolve({items})
+
+        return Promise.resolve(items)
     },
 }

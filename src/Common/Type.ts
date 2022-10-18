@@ -42,7 +42,7 @@ export type UserType = {
     login: string,
     email: string,
     createdAt: string,
-    passwordHash: string,
-    passwordSalt: string,
+    passwordHash: string ,
+    passwordSalt: string ,
 
 }
