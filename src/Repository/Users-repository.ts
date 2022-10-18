@@ -10,10 +10,7 @@ export const UsersRepository = {
             filter.email = {$regex: queryData.searchEmailTerm, $options: 'i'}
         }
         const totalCount = await UsersCollection.countDocuments({
-            login: {
-                $regex: queryData.searchLoginTerm,
-                $options: 'i'
-            },
+            $or: [{login: filter.login}, {email: filter.email}],
         })
         debugger
         const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
