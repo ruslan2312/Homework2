@@ -18,7 +18,13 @@ export const UsersRepository = {
 
     async findUsers(): Promise<any> {
         let filter: any = {}
-        const items = await UsersCollection.find(filter, {projection: {_id: 0}}).toArray();
+        const items = await UsersCollection.find(filter, {
+            projection: {
+                _id: 0,
+                passwordHash: 0,
+                passwordSalt: 0
+            }
+        }).toArray();
 
         return Promise.resolve(items)
     },
