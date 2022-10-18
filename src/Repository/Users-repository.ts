@@ -5,30 +5,33 @@ export const UsersRepository = {
     async findUsers(queryData: UsersPaginationQueryType): Promise<any> {
         let filter: any = {}
         debugger
-        if (queryData.searchLoginTerm) {
+        if (queryData.searchLoginTerm || queryData.searchEmailTerm) {
             filter.login = {$regex: queryData.searchLoginTerm, $options: 'i'}
+            filter.email = {$regex: queryData.searchEmailTerm, $options: 'i'}
         }
         const totalCount = await UsersCollection.countDocuments({
-            login: {
-                $regex: queryData.searchLoginTerm,
-                $options: 'i'
-            }
+
+
+        $or: [{login: filter.login}, {email: filter.email}],
+
         })
         debugger
         const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
         const page = Number(queryData.pageNumber)
         const pageSize = Number(queryData.pageSize)
-        const items = await UsersCollection.find(filter, {
+        debugger
+        const items = await UsersCollection.find({$or: [{login: filter.login}, {email: filter.email}]}, {
             projection: {
                 _id: 0,
                 passwordHash: 0,
-                passwordSalt: 0
-            }
+                passwordSalt: 0,
+            },
         })
             .sort(queryData.sortBy, queryData.sortDirection)
             .skip((page - 1) * pageSize)
             .limit(pageSize)
             .toArray()
+        debugger
         return Promise.resolve({pagesCount, page, pageSize, totalCount, items,})
     },
     async findByLoginOrEmail(loginOrEmail: string) {

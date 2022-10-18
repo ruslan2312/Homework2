@@ -33,7 +33,7 @@ export const findPostByIdTypePaginationData = (query: any): FindPostByIdPaginati
 }
 export const findUsersByIdTypePaginationData = (query: any): UsersPaginationQueryType => {
     const searchLoginTerm = query.searchLoginTerm ? query.searchLoginTerm : "";
-    const searchEmailTerm = query.searchEmailTerm ? query.searchLoginTerm : "";
+    const searchEmailTerm = query.searchEmailTerm ? query.searchEmailTerm : "";
     const pageSize = isNaN(query.pageSize) ? 10 : query.pageSize;
     const pageNumber = isNaN(query.pageNumber) ? 1 : query.pageNumber;
     const sortBy = query.sortBy === "name" ? "name" : "createdAt";
