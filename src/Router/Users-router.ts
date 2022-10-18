@@ -18,7 +18,7 @@ UsersRouter.post('/', usersEmailValidation, usersPasswordValidation, usersLoginV
     console.log(newUser)
     res.status(201).send(newUser)
 })
-UsersRouter.delete('/', async (req: Request, res: Response) => {
+UsersRouter.delete('/:id', async (req: Request, res: Response) => {
     const deleteUsers = await UsersService.deleteUser(req.params.id)
     if (deleteUsers) {
         res.send(204)

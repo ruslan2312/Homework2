@@ -60,7 +60,6 @@ BlogsRouter.put('/:id', mwBasicAuth, nameValidation, youtubeUrlValidation, input
         res.send(404)
     }
 })
-
 BlogsRouter.delete('/:id', mwBasicAuth, async (req: Request, res: Response) => {
     const deleteBlog = await BlogsService.deleteBlog(req.params.id)
     if (deleteBlog) {
