@@ -28,9 +28,12 @@ export const UsersService = {
     async checkCredentials(loginOrEmail: string, password: string) {
         debugger
         const user = await UsersRepository.findByLoginOrEmail(loginOrEmail)
+        debugger
         if (!user) return false
         const passwordHash = await this._generateHash(password, user.passwordSalt)
+        debugger
         return user.passwordHash === passwordHash;
+
 
     },
     async _generateHash(password: string, salt: string) {

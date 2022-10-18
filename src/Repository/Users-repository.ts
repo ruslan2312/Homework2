@@ -34,7 +34,7 @@ export const UsersRepository = {
         return Promise.resolve({pagesCount, page, pageSize, totalCount, items,})
     },
     async findByLoginOrEmail(loginOrEmail: string) {
-        return await UsersCollection.findOne({$or: [{email: loginOrEmail}, {userName: loginOrEmail}]})
+        return await UsersCollection.findOne({$or: [{email: loginOrEmail}, {login: loginOrEmail}]})
     },
     async createUser(user: UserType): Promise<any> {
         await UsersCollection.insertOne({...user});
