@@ -39,7 +39,7 @@ export type FindPostByIdPaginationQueryType = {
 
 export type UserType = {
     id: string,
-    userName: string,
+    login: string,
     email: string,
     createdAt: string,
     passwordHash: string,

@@ -12,7 +12,7 @@ export const UsersService = {
         const passwordHash = await this._generateHash(password, passwordSalt)
         const newUser: UserType = {
             id: new Date().valueOf().toString(),
-            userName: login,
+            login: login,
             email: email,
             passwordHash,
             passwordSalt,
