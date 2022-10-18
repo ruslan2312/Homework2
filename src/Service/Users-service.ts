@@ -1,9 +1,9 @@
-import { UserType} from "../Common/Type";
+import {UserType} from "../Common/Type";
 import bcrypt from 'bcrypt'
 import {UsersRepository} from "../Repository/Users-repository";
 
 export const UsersService = {
-    async findUsers():Promise<UserType[]> {
+    async findUsers(): Promise<UserType[]> {
         return await UsersRepository.findUsers();
     },
     async createUser(login: string, email: string, password: string): Promise<UserType> {
@@ -16,29 +16,24 @@ export const UsersService = {
             passwordHash,
             passwordSalt,
             createdAt: new Date().toISOString()
-            }
-            return UsersRepository.createUser(newUser)
+        }
+        return UsersRepository.createUser(newUser)
     },
-
-
+    async deleteUser(id: string): Promise<boolean> {
+        return await UsersRepository.deleteUser(id)
+    },
+    async deleteAllUsers(): Promise<boolean> {
+        return UsersRepository.deleteAllUsers()
+    },
     async checkCredentials(loginOrEmail: string, password: string) {
         debugger
         const user = await UsersRepository.findByLoginOrEmail(loginOrEmail)
         if (!user) return false
         const passwordHash = await this._generateHash(password, user.passwordSalt)
-        if (user.passwordHash !== passwordHash) {
-            return false
-        }
-        return true
+        return user.passwordHash === passwordHash;
+
     },
     async _generateHash(password: string, salt: string) {
         return await bcrypt.hash(password, salt)
-    },
-
-    async deleteUser(id:string): Promise<boolean> {
-        return await UsersRepository.deleteUser(id)
-    },
-    async deleteAllUsers(): Promise<boolean> {
-        return  UsersRepository.deleteAllUsers()
     },
 }

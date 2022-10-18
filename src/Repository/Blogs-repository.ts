@@ -29,7 +29,6 @@ export const BlogsRepository = {
     async findBlogByID(id: string): Promise<BlogsType | null> {
         return await BlogsCollection.findOne({id: id}, {projection: {_id: 0}});
     },
-
     async findBlogAndPostByID(queryData: FindPostByIdPaginationQueryType, blogId: string): Promise<any | null> {
         let filter: any = {}
         if (blogId) {
@@ -55,12 +54,6 @@ export const BlogsRepository = {
         }
         return Promise.resolve({pagesCount, page, pageSize, totalCount, items})
     },
-
-
-    async updateBlog(id: string, name: string, youtubeUrl: string): Promise<boolean> {
-        const result = await BlogsCollection.updateOne({id: id}, {$set: {name: name, youtubeUrl: youtubeUrl}})
-        return result.matchedCount === 1
-    },
     async createBlog(newBlog: BlogsType): Promise<BlogsType> {
         await BlogsCollection.insertOne({...newBlog});
         return newBlog
@@ -68,6 +61,10 @@ export const BlogsRepository = {
     async createPostByBlog(newPost: PostsType): Promise<PostsType> {
         await PostsCollection.insertOne({...newPost});
         return newPost
+    },
+    async updateBlog(id: string, name: string, youtubeUrl: string): Promise<boolean> {
+        const result = await BlogsCollection.updateOne({id: id}, {$set: {name: name, youtubeUrl: youtubeUrl}})
+        return result.matchedCount === 1
     },
     async deleteBlog(id: string): Promise<boolean> {
         const result = await BlogsCollection.deleteOne({id: id})

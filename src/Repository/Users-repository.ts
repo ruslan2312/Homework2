@@ -2,12 +2,6 @@ import {UsersCollection} from "./Db";
 import {UserType} from "../Common/Type";
 
 export const UsersRepository = {
-
-    async createUser(user: UserType): Promise<any> {
-        await UsersCollection.insertOne({...user});
-        return Promise.resolve({...user, passwordHash: undefined, passwordSalt: undefined})
-
-    },
     async findByLoginOrEmail(loginOrEmail: string) {
         return await UsersCollection.findOne({$or: [{email: loginOrEmail}, {userName: loginOrEmail}]})
     },
@@ -22,6 +16,11 @@ export const UsersRepository = {
         }).toArray();
 
         return Promise.resolve(items)
+    },
+    async createUser(user: UserType): Promise<any> {
+        await UsersCollection.insertOne({...user});
+        return Promise.resolve({...user, passwordHash: undefined, passwordSalt: undefined})
+
     },
     async deleteUser(id: string): Promise<boolean> {
         const result = await UsersCollection.deleteOne({id: id})
