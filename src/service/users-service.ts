@@ -1,4 +1,4 @@
-import {UsersPaginationQueryType, UserType} from "../common/type";
+import {UsersPaginationQueryType, UserType} from "../types/type";
 import bcrypt from 'bcrypt'
 import {usersRepository} from "../repository/users-repository";
 

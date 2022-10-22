@@ -1,5 +1,5 @@
 import {feedbackRepository} from "../repository/feedback-repository";
-import {FeedbackType} from "../common/type";
+import {FeedbackType} from "../types/type";
 
 export const feedbackService = {
     async sendFeedback(content: string, id: string): Promise<FeedbackType> {

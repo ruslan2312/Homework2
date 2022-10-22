@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {inputValidationMiddleware} from "../middleware/Input-validation-middleware";
 import {mwBasicAuth} from "../middleware/authorization-middleware";
 import {blogsService} from "../service/blogs-service";
-import {PostsType, BlogsType} from "../common/type";
+import {PostsType, BlogsType} from "../types/type";
 import {findPostByIdTypePaginationData, paginationData} from "../common/paginationData";
 import {
     titleValidation,

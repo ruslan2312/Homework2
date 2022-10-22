@@ -1,5 +1,5 @@
 import {UsersCollection} from "./db";
-import {UsersPaginationQueryType, UserType} from "../common/type";
+import {UsersPaginationQueryType, UserType} from "../types/type";
 import {Filter} from "mongodb";
 
 

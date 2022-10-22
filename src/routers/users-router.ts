@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {usersService} from "../service/users-service";
 import {usersEmailValidation, usersLoginValidation, usersPasswordValidation} from "../common/validator";
 import {mwBasicAuth} from "../middleware/authorization-middleware";
-import {UserType} from "../common/type";
+import {UserType} from "../types/type";
 import {inputValidationMiddleware} from "../middleware/Input-validation-middleware";
 import {UsersPaginationData} from "../common/paginationData";
 

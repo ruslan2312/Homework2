@@ -1,5 +1,5 @@
 import {BlogsCollection, PostsCollection} from "./db";
-import {BlogsType, BlogPaginationQueryType, PostsType, FindPostByIdPaginationQueryType} from "../common/type";
+import {BlogsType, BlogPaginationQueryType, PostsType, FindPostByIdPaginationQueryType} from "../types/type";
 
 export const blogs: BlogsType [] = [];
 

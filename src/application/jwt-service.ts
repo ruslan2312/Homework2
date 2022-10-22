@@ -1,4 +1,4 @@
-import {UserType} from "../common/type";
+import {UserType} from "../types/type";
 import jwt from 'jsonwebtoken'
 import {settings} from "../settings";
 

@@ -1,4 +1,4 @@
-import {FeedbackType} from "../common/type";
+import {FeedbackType} from "../types/type";
 import {FeedbackCollection} from "./db";
 
 export const feedback: FeedbackType[] = []

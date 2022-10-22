@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {inputValidationMiddleware} from "../middleware/Input-validation-middleware";
 import {mwBasicAuth} from "../middleware/authorization-middleware";
 import {postsService} from "../service/posts-service";
-import {PostsType} from "../common/type";
+import {PostsType} from "../types/type";
 import {getPostPaginationData} from "../common/paginationData";
 import {
     titleValidation,

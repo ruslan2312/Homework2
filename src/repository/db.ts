@@ -1,5 +1,5 @@
 import {MongoClient} from "mongodb"
-import {PostsType, BlogsType, UserType,FeedbackType} from "../common/type";
+import {PostsType, BlogsType, UserType,FeedbackType} from "../types/type";
 import {settings} from "../settings";
 
 const mongoUri = settings.MONGO_URI

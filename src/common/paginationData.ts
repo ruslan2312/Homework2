@@ -3,7 +3,7 @@ import {
     FindPostByIdPaginationQueryType,
     UsersPaginationQueryType,
     PostPaginationQueryType
-} from "./type";
+} from "../types/type";
 
 export const paginationData = (query: any): BlogPaginationQueryType => {
     const searchNameTerm = query.searchNameTerm ? query.searchNameTerm : "";
