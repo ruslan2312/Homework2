@@ -2,37 +2,30 @@ import {UsersCollection} from "./Db";
 import {UsersPaginationQueryType, UserType} from "../Common/Type";
 import {Filter} from "mongodb";
 
-const findUsersByFilters = async (filter: Filter<UserType>, queryData: UsersPaginationQueryType) => {
-    const totalCount = await UsersCollection.countDocuments(filter)
-    const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
-    const page = Number(queryData.pageNumber)
-    const pageSize = Number(queryData.pageSize)
-    const items = await UsersCollection.find(filter, {projection: {_id: 0, passwordHash: 0, passwordSalt: 0,},})
-        .sort(queryData.sortBy, queryData.sortDirection)
-        .skip((page - 1) * pageSize)
-        .limit(pageSize)
-        .toArray()
-    return Promise.resolve({pagesCount, page, pageSize, totalCount, items})
-}
+
 
 export const UsersRepository = {
     async findUsers(queryData: UsersPaginationQueryType): Promise<any> {
-        // 1
         if (!queryData.searchLoginTerm && !queryData.searchEmailTerm) {
-            return await findUsersByFilters({}, queryData)
+            return await this._findUsersByFilters({}, queryData)
         }
         if (!queryData.searchEmailTerm && queryData.searchLoginTerm){
-            return await findUsersByFilters({login: {$regex: queryData.searchLoginTerm, $options: 'i'}}, queryData)
+            return await this._findUsersByFilters({login: {$regex: queryData.searchLoginTerm, $options: 'i'}}, queryData)
         }
         if (queryData.searchEmailTerm && !queryData.searchLoginTerm){
-            return await findUsersByFilters({email: {$regex: queryData.searchEmailTerm, $options: 'i'}}, queryData)
+            return await this._findUsersByFilters({email: {$regex: queryData.searchEmailTerm, $options: 'i'}}, queryData)
         }
         if (queryData.searchEmailTerm && queryData.searchLoginTerm){
             const filterWithOr = {$or: [
-                {login: {$regex: queryData.searchLoginTerm, $options: 'i'}}, {email: {$regex: queryData.searchEmailTerm, $options: 'i'}}
+                    {login: {$regex: queryData.searchLoginTerm, $options: 'i'}}, {email: {$regex: queryData.searchEmailTerm, $options: 'i'}}
                 ]}
-            return await findUsersByFilters(filterWithOr, queryData)
+            return await this._findUsersByFilters(filterWithOr, queryData)
         }
+        // 1
+        // const filter = this._getFilterForQuery(queryData)
+        // const users = await this._findUsersByFilters(filter, queryData)
+        // return users
+
         // 2
         // let filter: Filter<UserType> = {}
         // const loginFilter: Filter<UserType> = {login: {$regex: queryData.searchLoginTerm, $options: 'i'}}
@@ -97,4 +90,40 @@ export const UsersRepository = {
         const result = await UsersCollection.deleteMany({})
         return result.deletedCount === 1
     },
+    _getFilterForQuery(queryData: UsersPaginationQueryType): Filter<UserType> {
+        // if (!queryData.searchLoginTerm && !queryData.searchEmailTerm) {
+        //     return {}
+        // }
+        if (!queryData.searchEmailTerm && queryData.searchLoginTerm) {
+            return {login: {$regex: queryData.searchLoginTerm, $options: 'i'}}
+        }
+        if (queryData.searchEmailTerm && !queryData.searchLoginTerm) {
+            return {email: {$regex: queryData.searchEmailTerm, $options: 'i'}}
+        }
+        if (queryData.searchEmailTerm && queryData.searchLoginTerm) {
+            return {
+                $or: [
+                    {
+                        login: {
+                            $regex: queryData.searchLoginTerm,
+                            $options: 'i'
+                        }
+                    }, {email: {$regex: queryData.searchEmailTerm, $options: 'i'}}
+                ]
+            }
+        }
+        return {}
+    },
+    async _findUsersByFilters (filter: Filter<UserType>, queryData: UsersPaginationQueryType)  {
+        const totalCount = await UsersCollection.countDocuments(filter)
+        const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
+        const page = Number(queryData.pageNumber)
+        const pageSize = Number(queryData.pageSize)
+        const items = await UsersCollection.find(filter, {projection: {_id: 0, passwordHash: 0, passwordSalt: 0,},})
+            .sort(queryData.sortBy, queryData.sortDirection)
+            .skip((page - 1) * pageSize)
+            .limit(pageSize)
+            .toArray()
+        return Promise.resolve({pagesCount, page, pageSize, totalCount, items})
+    }
 }
