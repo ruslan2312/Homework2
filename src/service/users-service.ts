@@ -1,10 +1,13 @@
-import {UsersPaginationQueryType, UserType} from "../Common/Type";
+import {UsersPaginationQueryType, UserType} from "../common/type";
 import bcrypt from 'bcrypt'
-import {UsersRepository} from "../Repository/Users-repository";
+import {usersRepository} from "../repository/users-repository";
 
-export const UsersService = {
+export const usersService = {
     async findUsers(query: UsersPaginationQueryType): Promise<UserType[]> {
-        return await UsersRepository.findUsers(query);
+        return await usersRepository.findUsers(query);
+    },
+    async findUserById(id: string): Promise<UserType | null> {
+        return usersRepository.findUserById(id)
     },
     async createUser(login: string, email: string, password: string): Promise<UserType> {
         const passwordSalt = await bcrypt.genSalt(10);
@@ -17,22 +20,21 @@ export const UsersService = {
             passwordSalt,
             createdAt: new Date().toISOString()
         }
-        return UsersRepository.createUser(newUser)
+        return usersRepository.createUser(newUser)
     },
     async deleteUser(id: string): Promise<boolean> {
-        return await UsersRepository.deleteUser(id)
+        return await usersRepository.deleteUser(id)
     },
     async deleteAllUsers(): Promise<boolean> {
-        return UsersRepository.deleteAllUsers()
+        return usersRepository.deleteAllUsers()
     },
     async checkCredentials(loginOrEmail: string, password: string) {
-        debugger
-        const user = await UsersRepository.findByLoginOrEmail(loginOrEmail)
-        debugger
+        const user = await usersRepository.findByLoginOrEmail(loginOrEmail)
         if (!user) return false
         const passwordHash = await this._generateHash(password, user.passwordSalt)
-        debugger
-        return user.passwordHash === passwordHash;
+        if (user.passwordHash === passwordHash) {
+            return user
+        } else return null;
     },
     async _generateHash(password: string, salt: string) {
         return await bcrypt.hash(password, salt)

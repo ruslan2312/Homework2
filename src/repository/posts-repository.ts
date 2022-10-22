@@ -1,9 +1,9 @@
-import {PostsCollection} from "./Db";
-import {PostPaginationQueryType, PostsType} from "../Common/Type";
+import {PostsCollection} from "./db";
+import {PostPaginationQueryType, PostsType} from "../common/type";
 
 export const posts: PostsType [] = [];
 
-export const PostsRepository = {
+export const postsRepository = {
     async findPost(queryData: PostPaginationQueryType): Promise<any> {
         let filter: any = {}
         debugger

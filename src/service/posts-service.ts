@@ -1,19 +1,19 @@
-import {PostsRepository} from "../Repository/Posts-repository";
-import {BlogsCollection} from "../Repository/Db";
-import {PostPaginationQueryType, PostsType} from "../Common/Type";
+import {postsRepository} from "../repository/posts-repository";
+import {BlogsCollection} from "../repository/db";
+import {PostPaginationQueryType, PostsType} from "../common/type";
 
-export const PostsService = {
+export const postsService = {
     async findPost(query: PostPaginationQueryType): Promise<PostsType[]> {
-        return PostsRepository.findPost(query)
+        return postsRepository.findPost(query)
     },
     async findPostByID(id: string): Promise<PostsType | null> {
-        return PostsRepository.findPostByID(id)
+        return postsRepository.findPostByID(id)
     },
     async deletePost(id: string): Promise<boolean> {
-        return await PostsRepository.deletePost(id)
+        return await postsRepository.deletePost(id)
     },
     async updatePost(id: string, title: string, shortDescription: string, content: string, blogId: string): Promise<boolean> {
-        return await PostsRepository.updatePost(id, title, shortDescription, content, blogId)
+        return await postsRepository.updatePost(id, title, shortDescription, content, blogId)
     },
     async createPost(title: string, shortDescription: string, content: string, blogId: string): Promise<PostsType | null> {
         const blogger = await BlogsCollection.findOne({id: blogId})
@@ -27,11 +27,11 @@ export const PostsService = {
                 blogName: blogger.name,
                 createdAt: new Date().toISOString()
             }
-            return await PostsRepository.createPost(newPost)
+            return await postsRepository.createPost(newPost)
         }
         return null
     },
     async deleteAllPosts(): Promise<boolean> {
-        return PostsRepository.deleteAllPosts()
+        return postsRepository.deleteAllPosts()
     },
 }

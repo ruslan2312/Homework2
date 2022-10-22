@@ -1,17 +1,17 @@
-import {BlogsRepository} from "../Repository/Blogs-repository";
-import {PostsRepository} from "../Repository/Posts-repository";
-import {BlogsCollection} from "../Repository/Db";
-import {PostsType, BlogsType, BlogPaginationQueryType, FindPostByIdPaginationQueryType} from "../Common/Type";
+import {blogsRepository} from "../repository/blogs-repository";
+import {postsRepository} from "../repository/posts-repository";
+import {BlogsCollection} from "../repository/db";
+import {PostsType, BlogsType, BlogPaginationQueryType, FindPostByIdPaginationQueryType} from "../common/type";
 
-export const BlogsService = {
+export const blogsService = {
     async findBlog(query: BlogPaginationQueryType): Promise<BlogsType[]> {
-        return BlogsRepository.findBlog(query)
+        return blogsRepository.findBlog(query)
     },
     async findBlogByID(id: string): Promise<BlogsType | null> {
-        return BlogsRepository.findBlogByID(id)
+        return blogsRepository.findBlogByID(id)
     },
     async findBlogAndPostByID(query: FindPostByIdPaginationQueryType, blogId: string): Promise<PostsType[] | any> {
-        return await BlogsRepository.findBlogAndPostByID(query, blogId)
+        return await blogsRepository.findBlogAndPostByID(query, blogId)
     },
     async createBlog(name: string, youtubeUrl: string): Promise<BlogsType> {
         const newBlog = {
@@ -20,7 +20,7 @@ export const BlogsService = {
             youtubeUrl: youtubeUrl,
             createdAt: new Date().toISOString()
         }
-        return await BlogsRepository.createBlog(newBlog)
+        return await blogsRepository.createBlog(newBlog)
     },
     async createPostByBlog(blogId: string, title: string, shortDescription: string, content: string): Promise<PostsType | null> {
         const blogger = await BlogsCollection.findOne({id: blogId})
@@ -35,18 +35,18 @@ export const BlogsService = {
                 blogName: blogger.name,
                 createdAt: new Date().toISOString()
             }
-            return await PostsRepository.createPost(newPost)
+            return await postsRepository.createPost(newPost)
         }
         return null
     },
     async updateBlog(id: string, name: string, youtubeUrl: string): Promise<boolean> {
-        return await BlogsRepository.updateBlog(id, name, youtubeUrl)
+        return await blogsRepository.updateBlog(id, name, youtubeUrl)
     },
     async deleteBlog(id: string): Promise<boolean> {
-        return await BlogsRepository.deleteBlog(id)
+        return await blogsRepository.deleteBlog(id)
     },
     async deleteAllBlogger(): Promise<boolean> {
-        return BlogsRepository.deleteAllBlogger()
+        return blogsRepository.deleteAllBlogger()
     },
 
 }

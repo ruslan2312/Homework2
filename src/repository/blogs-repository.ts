@@ -1,9 +1,9 @@
-import {BlogsCollection, PostsCollection} from "./Db";
-import {BlogsType, BlogPaginationQueryType, PostsType, FindPostByIdPaginationQueryType} from "../Common/Type";
+import {BlogsCollection, PostsCollection} from "./db";
+import {BlogsType, BlogPaginationQueryType, PostsType, FindPostByIdPaginationQueryType} from "../common/type";
 
 export const blogs: BlogsType [] = [];
 
-export const BlogsRepository = {
+export const blogsRepository = {
     async findBlog(queryData: BlogPaginationQueryType): Promise<any> {
         let filter: any = {}
         if (queryData.searchNameTerm) {

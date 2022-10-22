@@ -52,3 +52,10 @@ export type UserType = {
     passwordHash: string,
     passwordSalt: string,
 }
+export type FeedbackType = {
+    id:string,
+    content:string,
+    userId?:string,
+    userLogin?:string,
+    createdAt?:string
+}
