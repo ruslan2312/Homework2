@@ -63,10 +63,12 @@ export const postsRepository = {
         return newComment
     },
     async findCommentByPostId(queryData: CommentsPaginationQueryType, postId: string): Promise<any> {
-        let post: PostsType | null = await PostsCollection.findOne({id: postId}, {projection: {_id: 0}})
+        let post: PostsType | null = await PostsCollection.findOne({id: postId},
+            {projection: {_id: 0, postId: 0}})
         if (post) {
             debugger
-            let commentsPost = await CommentsCollection.find({postId: post.id}, {projection: {_id: 0, postId:0}}).toArray()
+            let commentsPost = await CommentsCollection.find({postId: post.id},
+                {projection: {_id: 0, postId: 0}}).toArray()
             return Promise.resolve({...commentsPost})
         } else {
             return null
