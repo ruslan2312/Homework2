@@ -19,5 +19,10 @@ authRouter.get('/me', authTokenMW, async (req: Request, res: Response) => {
     const email = req.user.email
     const login = req.user.login;
     const userId = req.user.id
-    res.send({email, login, userId})
+    debugger
+    if (email && login && userId) {
+        res.send({email, login, userId})
+    } else {
+        res.sendStatus(401)
+    }
 })

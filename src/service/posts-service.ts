@@ -1,6 +1,6 @@
 import {postsRepository} from "../repository/posts-repository";
-import {BlogsCollection} from "../repository/db";
-import {PostPaginationQueryType, PostsType} from "../types/type";
+import {BlogsCollection, PostsCollection} from "../repository/db";
+import {CommentsPaginationQueryType, CommentsType, PostPaginationQueryType, PostsType} from "../types/type";
 
 export const postsService = {
     async findPost(query: PostPaginationQueryType): Promise<PostsType[]> {
@@ -34,4 +34,42 @@ export const postsService = {
     async deleteAllPosts(): Promise<boolean> {
         return postsRepository.deleteAllPosts()
     },
+/// COMMENTS ==========================================================================================================
+    async findCommentsByPostId(queryData: CommentsPaginationQueryType, postId: string | null): Promise<CommentsType | null> {
+        if (postId) {
+            return  await postsRepository.findCommentByPostId(queryData, postId)
+        } else return null
+    },
+    async createCommentsById(content: string, postId: string, userId: string, login: string): Promise<CommentsType | null> {
+        const post = await PostsCollection.findOne({id: postId})
+        if (post) {
+            const newComment = {
+                id: new Date().valueOf().toString(),
+                content: content,
+                userId: userId,
+                userLogin: login,
+                postId: postId,
+                createdAt: new Date().toISOString()
+            }
+            return await postsRepository.createCommentsById(newComment)
+        }
+        return null
+//// Рпи создании Комента мы запихиваем туда PostId и потом ищем по нему же
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

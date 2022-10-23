@@ -37,8 +37,8 @@ export type FindPostByIdPaginationQueryType = {
     sortDirection: "asc" | "desc";
 }
 export type UsersPaginationQueryType = {
-    searchLoginTerm: string ,
-    searchEmailTerm: string ,
+    searchLoginTerm: string,
+    searchEmailTerm: string,
     pageSize: number,
     pageNumber: number,
     sortBy: string,
@@ -52,10 +52,17 @@ export type UserType = {
     passwordHash: string,
     passwordSalt: string,
 }
-export type FeedbackType = {
-    id:string,
-    content:string,
-    userId?:string,
-    userLogin?:string,
-    createdAt?:string
+export type CommentsType = {
+    id: string,
+    content: string,
+    userId?: string,
+    userLogin?: string,
+    createdAt?: string
+}
+export type  CommentsPaginationQueryType = {
+    postId: string,
+    pageSize: number,
+    pageNumber: number,
+    sortBy: string,
+    sortDirection: "asc" | "desc";
 }

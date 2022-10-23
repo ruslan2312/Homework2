@@ -6,6 +6,7 @@ import {postsRouter} from "./routers/posts-router";
 import {allDelete} from "./routers/all-delete";
 import {usersRouter} from "./routers/users-router";
 import {authRouter} from "./routers/auth-router";
+import {commentsRouter} from "./routers/comments-router";
 
 dotenv.config()
 
@@ -16,6 +17,7 @@ app.use('/blogs', blogsRouter)
 app.use('/posts', postsRouter)
 app.use('/users', usersRouter)
 app.use('/auth', authRouter)
+app.use("/comments", commentsRouter)
 app.use('/testing/all-data', allDelete)
 const startApp = async () => {
     await runDb()
