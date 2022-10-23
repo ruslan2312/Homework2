@@ -3,7 +3,7 @@ import {usersService} from "../service/users-service";
 import {usersEmailValidation, usersLoginValidation, usersPasswordValidation} from "../common/validator";
 import {UserType} from "../types/type";
 import {inputValidationMiddleware} from "../middleware/Input-validation-middleware";
-import {UsersPaginationData} from "../common/paginationData";
+import {UsersPaginationData} from "../common/blogPaginationData";
 import {mwBasicAuth} from "../middleware/MwBasic";
 
 

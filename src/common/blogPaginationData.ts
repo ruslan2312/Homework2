@@ -5,7 +5,7 @@ import {
     PostPaginationQueryType
 } from "../types/type";
 
-export const paginationData = (query: any): BlogPaginationQueryType => {
+export const BlogPaginationData = (query: any): BlogPaginationQueryType => {
     const searchNameTerm = query.searchNameTerm ? query.searchNameTerm : "";
     const pageSize = isNaN(query.pageSize) ? 10 : query.pageSize;
     const pageNumber = isNaN(query.pageNumber) ? 1 : query.pageNumber;
@@ -40,3 +40,7 @@ export const UsersPaginationData = (query: any): UsersPaginationQueryType => {
     const sortDirection = query.sortDirection === "asc" ? "asc" : "desc";
     return {searchLoginTerm, searchEmailTerm, pageSize, pageNumber, sortBy, sortDirection,}
 }
+// export const FeedbackPaginationData = (query: any): FeedbackType => {
+//     const
+//     return e
+// }
