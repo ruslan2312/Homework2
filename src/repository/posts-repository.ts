@@ -58,13 +58,13 @@ export const postsRepository = {
         return result.deletedCount === 1
     },
     /// COMMENTS ==========================================================================================================
-    async createCommentsById(newComment: CommentsType): Promise<CommentsType> {
+    async createCommentsById(newComment: CommentsType): Promise<any> {
         await CommentsCollection.insertOne({...newComment});
-        return newComment
+        return Promise.resolve( {...newComment, postId: undefined})
     },
     async findCommentByPostId(queryData: CommentsPaginationQueryType, postId: string): Promise<any> {
         let post: PostsType | null = await PostsCollection.findOne({id: postId},
-            {projection: {_id: 0, postId: 0}})
+            {projection: {_id: 0}})
         if (post) {
             debugger
             let commentsPost = await CommentsCollection.find({postId: post.id},

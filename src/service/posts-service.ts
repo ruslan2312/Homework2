@@ -37,10 +37,10 @@ export const postsService = {
 /// COMMENTS ==========================================================================================================
     async findCommentsByPostId(queryData: CommentsPaginationQueryType, postId: string | null): Promise<CommentsType | null> {
         if (postId) {
-            return  await postsRepository.findCommentByPostId(queryData, postId)
+            return await postsRepository.findCommentByPostId(queryData, postId)
         } else return null
     },
-    async createCommentsById(content: string, postId: string, userId: string, login: string): Promise<CommentsType | null> {
+    async createCommentsById(content: string, postId: string, userId: string, login: string): Promise<{ newComment: CommentsType ; postId: undefined } | null> {
         const post = await PostsCollection.findOne({id: postId})
         if (post) {
             const newComment = {
