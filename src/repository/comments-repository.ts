@@ -6,7 +6,7 @@ export const comments: CommentsType[] = []
 
 export const commentsRepository = {
     async findCommentsByID(id: string): Promise<CommentsType | null> {
-        return await CommentsCollection.findOne({id: id}, {projection: {_id: 0}});
+        return await CommentsCollection.findOne({id: id}, {projection: {_id: 0, postId: 0}});
     },
     async createComments(newComments: CommentsType): Promise<CommentsType> {
         await CommentsCollection.insertOne({...newComments})
