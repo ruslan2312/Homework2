@@ -15,10 +15,10 @@ commentsRouter.get('/:id', async (req: Request, res: Response) => {
         res.send(404)
     }
 })
-commentsRouter.post('/', authTokenMW, async (req: Request, res: Response) => {
-    const newFeedback = await commentsService.createComments(req.user!.id, req.body.content,)
-    res.status(204).send(newFeedback)
-})
+// commentsRouter.post('/', authTokenMW, async (req: Request, res: Response) => {
+//     const newFeedback = await commentsService.createComments(req.user!.id, req.body.content,)
+//     res.status(204).send(newFeedback)
+// })
 commentsRouter.put('/commentId', authTokenMW, commentsContentValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
     const isUpdate: boolean = await commentsService.updateComments(req.params.commentId , req.body.content, req.user.id)
     if (isUpdate) {
