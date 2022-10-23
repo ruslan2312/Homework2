@@ -1,5 +1,5 @@
 import {CommentsType} from "../types/type";
-import {CommentsCollection} from "./db";
+import {CommentsCollection, PostsCollection} from "./db";
 
 
 export const comments: CommentsType[] = []
@@ -12,12 +12,17 @@ export const commentsRepository = {
         await CommentsCollection.insertOne({...newComments})
         return newComments
     },
-    async updateComments(id: string, content: string, userId: string): Promise<boolean> {
-        const idR = await this.findCommentsByID(id)
-        if (idR!.userId === userId) {
-            const result = await CommentsCollection.updateOne({id: id}, {$set: {content: content}})
+    async updateComments(commentId: string, content: string, userId: string): Promise<boolean> {
+        debugger
+        const commentById = await this.findCommentsByID(commentId)
+        if (commentById!.userId === userId) {
+            const result = await CommentsCollection.updateOne({id: commentId}, {$set: {content: content}})
             return result.matchedCount === 1
         }
         return false
-    }
+    },
+    async deleteComment(id: string): Promise<boolean> {
+        const result = await CommentsCollection.deleteOne({id: id})
+        return result.deletedCount === 1
+    },
 }

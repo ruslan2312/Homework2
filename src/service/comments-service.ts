@@ -12,8 +12,11 @@ export const commentsService = {
         }
         return await commentsRepository.createComments(newFeedback)
     },
-    async updateComments(id: string, content: string, userId: string): Promise<boolean> {
-        return await commentsRepository.updateComments(id, content,userId)
+    async updateComments(commentId: string, content: string, userId: string): Promise<boolean> {
+        return await commentsRepository.updateComments(commentId, content, userId)
+    },
+    async deleteComment(id: string): Promise<boolean> {
+        return await commentsRepository.deleteComment(id)
     }
 }
 
