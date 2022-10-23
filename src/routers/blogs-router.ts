@@ -1,6 +1,6 @@
 import {Request, Response, Router} from "express";
 import {inputValidationMiddleware} from "../middleware/Input-validation-middleware";
-import {mwBasicAuth} from "../middleware/authorization-middleware";
+import {mwBasicAuth} from "../middleware/MwBasic";
 import {blogsService} from "../service/blogs-service";
 import {PostsType, BlogsType} from "../types/type";
 import {findPostByIdTypePaginationData, paginationData} from "../common/paginationData";
@@ -12,6 +12,7 @@ import {
     nameValidation,
     youtubeUrlValidation
 } from "../common/validator";
+
 
 export const blogsRouter = Router()
 

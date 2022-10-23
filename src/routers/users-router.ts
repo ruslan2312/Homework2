@@ -1,10 +1,10 @@
 import {Request, Response, Router} from "express";
 import {usersService} from "../service/users-service";
 import {usersEmailValidation, usersLoginValidation, usersPasswordValidation} from "../common/validator";
-import {mwBasicAuth} from "../middleware/authorization-middleware";
 import {UserType} from "../types/type";
 import {inputValidationMiddleware} from "../middleware/Input-validation-middleware";
 import {UsersPaginationData} from "../common/paginationData";
+import {mwBasicAuth} from "../middleware/MwBasic";
 
 
 export const usersRouter = Router()
@@ -20,7 +20,7 @@ usersRouter.post('/', usersEmailValidation, usersPasswordValidation, usersLoginV
     console.log(newUser)
     res.status(201).send(newUser)
 })
-usersRouter.delete('/:id', mwBasicAuth, inputValidationMiddleware,   async (req: Request, res: Response) => {
+usersRouter.delete('/:id', mwBasicAuth, inputValidationMiddleware, async (req: Request, res: Response) => {
     const deleteUsers = await usersService.deleteUser(req.params.id)
     if (deleteUsers) {
         res.send(204)
