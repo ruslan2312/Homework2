@@ -9,7 +9,7 @@ import {
     shortDescriptionValidation,
     contentValidation,
     blogIdValidation,
-    blogNameValidation
+    blogNameValidation, commentsContentValidation
 } from "../common/validator";
 import {authTokenMW} from "../middleware/authorization-middleware";
 
@@ -59,7 +59,7 @@ postsRouter.get('/:postId/comments', async (req: Request, res: Response) => {
     const findCommentsByPostId: CommentsType | null | undefined = await postsService.findCommentsByPostId(queryData, req.params.postId)
     res.status(200).send(findCommentsByPostId)
 })
-postsRouter.post('/:postId/comments', authTokenMW, async (req: Request, res: Response) => {
+postsRouter.post('/:postId/comments', authTokenMW, commentsContentValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
     const newComments = await postsService.createCommentsById(req.body.content, req.params.postId, req.user.id, req.user.login)
     res.status(201).send(newComments);
 })
