@@ -3,7 +3,6 @@ import {commentsService} from "../service/comments-service";
 import {authTokenMW} from "../middleware/authorization-middleware";
 import {CommentsType} from "../types/type";
 import {blogsService} from "../service/blogs-service";
-import {CommentsCollection} from "../repository/db";
 
 export const commentsRouter = Router()
 commentsRouter.get('/:id', async (req: Request, res: Response) => {
@@ -28,7 +27,7 @@ commentsRouter.put('/commentId', authTokenMW, async (req: Request, res: Response
     }
 })
 commentsRouter.delete('/commentId ', authTokenMW, async (req: Request, res: Response) => {
-const deleteComment = await commentsService.deleteComment(req.params.commentId)
+const deleteComment = await commentsService.deleteComment(req.params.commentId, req.user.id)
     if (deleteComment) {
         res.send(204)
     } else {

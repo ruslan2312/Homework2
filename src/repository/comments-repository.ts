@@ -1,5 +1,5 @@
 import {CommentsType} from "../types/type";
-import {CommentsCollection, PostsCollection} from "./db";
+import {CommentsCollection} from "./db";
 
 
 export const comments: CommentsType[] = []
@@ -21,8 +21,10 @@ export const commentsRepository = {
         }
         return false
     },
-    async deleteComment(id: string): Promise<boolean> {
-        const result = await CommentsCollection.deleteOne({id: id})
-        return result.deletedCount === 1
+    async deleteComment(id: string, idUser: string): Promise<boolean> {
+        if (id === idUser) {
+            const result = await CommentsCollection.deleteOne({id: id})
+            return result.deletedCount === 1
+        } else return false
     },
 }
