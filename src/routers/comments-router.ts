@@ -2,7 +2,6 @@ import {Request, Response, Router} from "express";
 import {commentsService} from "../service/comments-service";
 import {authTokenMW} from "../middleware/authorization-middleware";
 import {CommentsType} from "../types/type";
-import {blogsService} from "../service/blogs-service";
 import {commentsContentValidation} from "../common/validator";
 import {inputValidationMiddleware} from "../middleware/Input-validation-middleware";
 
@@ -20,44 +19,43 @@ commentsRouter.get('/:id', async (req: Request, res: Response) => {
 //     res.status(204).send(newFeedback)
 // })
 commentsRouter.put('/:commentId', authTokenMW, commentsContentValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
+    const email = req!.user!.email
+    const login = req!.user!.login;
+    const userId = req!.user!.id
+    const commentsUserId = await commentsService.findCommentsByID(req.params.commentId)
     try {
-        const email = req!.user!.email
-        const login = req!.user!.login;
-        const userId = req!.user!.id
-        if (email && login && userId === req.params.commentId) {
+        if (email && login && userId === commentsUserId!.userId) {
             const isUpdate: boolean = await commentsService.updateComments(req.params.commentId, req.body.content, req.user.id)
-            if (isUpdate && req.user.id === req.params.commentId) {
-                const blog = await blogsService.findBlogByID(req.params.id)
-                res.status(204).send(blog)
-            } else if (isUpdate && req.user.id !== req.params.commentId) {
-                res.sendStatus(403)
-            } else {
-                res.sendStatus(404)
-            }
+            if (isUpdate) {
+                res.sendStatus(204)
+            } else res.sendStatus(404)
+        } else {
+            res.sendStatus(403)
         }
-    } catch (error) {
-        res.sendStatus(401)
+    } catch (e) {
+        res.sendStatus(404)
+        console.log("warning")
     }
+
 
 })
 commentsRouter.delete('/:commentId', authTokenMW, inputValidationMiddleware, async (req: Request, res: Response) => {
-    debugger
+    const email = req!.user!.email
+    const login = req!.user!.login;
+    const userId = req!.user!.id
+    const commentsUserId = await commentsService.findCommentsByID(req.params.commentId)
     try {
-        const email = req!.user!.email
-        const login = req!.user!.login;
-        const userId = req!.user!.id
-        if (email && login && userId === req.params.commentId) {
+        if (email && login && userId === commentsUserId!.userId) {
             const deleteComment = await commentsService.deleteComment(req.params.commentId, req.user.id)
-            if (deleteComment && req.user.id === req.params.commentId) {
+            if (deleteComment) {
                 res.sendStatus(204)
-                } else if (deleteComment && req.user.id !== req.params.commentId) {
-                res.sendStatus(403)
-            } else {
-                res.sendStatus(404)
-            }
+            } else res.sendStatus(404)
+        } else {
+            res.sendStatus(403)
         }
-    } catch (error) {
-        res.sendStatus(401)
+    } catch (e) {
+        res.sendStatus(404)
+        console.log("warning")
     }
 
 })
