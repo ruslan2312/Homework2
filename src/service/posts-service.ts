@@ -40,7 +40,7 @@ export const postsService = {
             return await postsRepository.findCommentByPostId(queryData, postId)
         } else return null
     },
-    async createCommentsById(content: string, postId: string, userId: string, login: string): Promise<{ newComment: CommentsType ; postId: undefined } | null> {
+    async createCommentsById(content: string, postId: string, userId: string, login: string): Promise<{ newComment: CommentsType; postId: undefined } | null> {
         const post = await PostsCollection.findOne({id: postId})
         if (post) {
             const newComment = {
@@ -52,8 +52,7 @@ export const postsService = {
                 createdAt: new Date().toISOString()
             }
             return await postsRepository.createCommentsById(newComment)
-        }
-        return null
+        } else return null
 //// Рпи создании Комента мы запихиваем туда PostId и потом ищем по нему же
     }
 }

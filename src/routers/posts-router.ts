@@ -61,6 +61,7 @@ postsRouter.get('/:postId/comments', async (req: Request, res: Response) => {
 })
 postsRouter.post('/:postId/comments', authTokenMW, commentsContentValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
     const newComments = await postsService.createCommentsById(req.body.content, req.params.postId, req.user.id, req.user.login)
+    console.log(newComments)
     res.status(201).send(newComments);
 })
 
