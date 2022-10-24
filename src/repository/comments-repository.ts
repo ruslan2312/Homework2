@@ -14,15 +14,17 @@ export const commentsRepository = {
     // },
     async updateComments(commentId: string, content: string, userId: string): Promise<boolean> {
         debugger
-        const commentById = await this.findCommentsByID(commentId)
-        if (commentById!.userId === userId) {
+        const commentUserId = await this.findCommentsByID(commentId)
+        if (commentUserId!.userId === userId) {
             const result = await CommentsCollection.updateOne({id: commentId}, {$set: {content: content}})
             return result.matchedCount === 1
         }
         return false
     },
     async deleteComment(id: string, idUser: string): Promise<boolean> {
-        if (id === idUser) {
+        const commentUserId = await this.findCommentsByID(id)
+        console.log(id, idUser, commentUserId!.userId)
+        if (commentUserId!.userId === idUser) {
             const result = await CommentsCollection.deleteOne({id: id})
             return result.deletedCount === 1
         } else return false
