@@ -20,24 +20,40 @@ commentsRouter.get('/:id', async (req: Request, res: Response) => {
 //     res.status(204).send(newFeedback)
 // })
 commentsRouter.put('/:commentId', authTokenMW, commentsContentValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
-    const isUpdate: boolean = await commentsService.updateComments(req.params.commentId, req.body.content, req.user.id)
-    if (isUpdate && req.user.id === req.params.commentId) {
-        const blog = await blogsService.findBlogByID(req.params.id)
-        res.status(204).send(blog)
-    } else if (isUpdate && req.user.id !== req.params.commentId) {
-        res.send(403)
+    const email = req.user!.email
+    const login = req.user!.login;
+    const userId = req.user!.id
+    if (email && login && userId) {
+        const isUpdate: boolean = await commentsService.updateComments(req.params.commentId, req.body.content, req.user.id)
+        if (isUpdate && req.user.id === req.params.commentId) {
+            const blog = await blogsService.findBlogByID(req.params.id)
+            res.status(204).send(blog)
+        } else if (isUpdate && req.user.id !== req.params.commentId) {
+            res.sendStatus(403)
+        } else {
+            res.sendStatus(404)
+        }
     } else {
-        res.send(404)
+        res.sendStatus(401)
     }
 })
 commentsRouter.delete('/:commentId', authTokenMW, inputValidationMiddleware, async (req: Request, res: Response) => {
-    const deleteComment = await commentsService.deleteComment(req.params.commentId, req.user.id)
-    if (deleteComment && req.user.id === req.params.commentId) {
-        res.send(204)
-    } else if (deleteComment && req.user.id !== req.params.commentId) {
-        res.send(403)
+    debugger
+    const email = req.user!.email
+    const login = req.user!.login;
+    const userId = req.user!.id
+    if (email && login && userId) {
+        const deleteComment = await commentsService.deleteComment(req.params.commentId, req.user.id)
+        if (deleteComment && req.user.id === req.params.commentId) {
+            res.send(204)
+        } else if (deleteComment && req.user.id !== req.params.commentId) {
+            res.send(403)
+        } else {
+            res.send(404)
+        }
     } else {
-        res.send(404)
+        res.sendStatus(401)
     }
+
 })
 
