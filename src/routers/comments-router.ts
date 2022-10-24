@@ -34,8 +34,6 @@ commentsRouter.put('/:commentId', authTokenMW, commentsContentValidation, inputV
             } else {
                 res.sendStatus(404)
             }
-        } else {
-            res.sendStatus(401)
         }
     } catch (error) {
         res.sendStatus(401)
@@ -51,19 +49,16 @@ commentsRouter.delete('/:commentId', authTokenMW, inputValidationMiddleware, asy
         if (email && login && userId === req.params.commentId) {
             const deleteComment = await commentsService.deleteComment(req.params.commentId, req.user.id)
             if (deleteComment && req.user.id === req.params.commentId) {
-                res.send(204)
-            } else if (deleteComment && req.user.id !== req.params.commentId) {
-                res.send(403)
+                res.sendStatus(204)
+                } else if (deleteComment && req.user.id !== req.params.commentId) {
+                res.sendStatus(403)
             } else {
-                res.send(404)
+                res.sendStatus(404)
             }
-        } else {
-            res.sendStatus(401)
         }
     } catch (error) {
         res.sendStatus(401)
     }
-
 
 })
 
