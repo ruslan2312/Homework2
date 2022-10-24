@@ -6,7 +6,6 @@ export const posts: PostsType [] = [];
 export const postsRepository = {
     async findPost(queryData: PostPaginationQueryType): Promise<any> {
         let filter: any = {}
-        debugger
         if (queryData.searchNameTerm) {
             filter.title = {$regex: queryData.searchNameTerm, $options: 'i'}
         }
@@ -58,21 +57,34 @@ export const postsRepository = {
         return result.deletedCount === 1
     },
     /// COMMENTS ==========================================================================================================
-    async createCommentsById(newComment: CommentsType): Promise<any> {
-        await CommentsCollection.insertOne({...newComment});
-        return Promise.resolve( {...newComment, postId: undefined})
-    },
     async findCommentByPostId(queryData: CommentsPaginationQueryType, postId: string): Promise<any> {
         let post: PostsType | null = await PostsCollection.findOne({id: postId},
             {projection: {_id: 0}})
         if (post) {
-            debugger
-            let commentsPost = await CommentsCollection.find({postId: post.id},
-                {projection: {_id: 0, postId: 0}}).toArray()
-            return Promise.resolve({...commentsPost})
+            let filter: any = {postId: post.id}
+            const total = await CommentsCollection.find({postId: postId});
+            const totalCount = await total.count().then((total) => {
+                return total
+            });
+            const pagesCount = Number(Math.ceil(Number(totalCount) / queryData.pageSize))
+            const page = Number(queryData.pageNumber)
+            const pageSize = Number(queryData.pageSize)
+            const items = await CommentsCollection.find(filter,
+                {projection: {_id: 0, postId: 0}}).sort(queryData.sortBy, queryData.sortDirection)
+                .skip((page - 1) * pageSize)
+                .limit(pageSize)
+                .toArray()
+            // let commentsPost = await CommentsCollection.find({postId: post.id},
+            //     {projection: {_id: 0, postId: 0}}).toArray()
+            return Promise.resolve({pagesCount, page, pageSize, totalCount, items,})
         } else {
             return null
         }
-    }
+    },
+    async createCommentsById(newComment: CommentsType): Promise<any> {
+        await CommentsCollection.insertOne({...newComment});
+        return Promise.resolve({...newComment, postId: undefined})
+    },
+
 
 }

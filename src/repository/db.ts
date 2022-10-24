@@ -7,7 +7,7 @@ const mongoUri = settings.MONGO_URI
 const client = new MongoClient(mongoUri)
 
 const db = client.db("Profile")
-export const CommentsCollection = db.collection<CommentsType>("feedback")
+export const CommentsCollection = db.collection<CommentsType>("comments")
 export const BlogsCollection = db.collection<BlogsType>("blogs")
 export const PostsCollection = db.collection<PostsType>("posts")
 export const UsersCollection = db.collection<UserType>("users")

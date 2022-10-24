@@ -60,6 +60,7 @@ export type CommentsType = {
     createdAt?: string
 }
 export type  CommentsPaginationQueryType = {
+    content?: string
     postId: string,
     pageSize: number,
     pageNumber: number,
