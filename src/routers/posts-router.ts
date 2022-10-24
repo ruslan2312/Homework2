@@ -14,7 +14,6 @@ import {
 import {authTokenMW} from "../middleware/authorization-middleware";
 
 export const postsRouter = Router()
-
 postsRouter.get('/', async (req: Request, res: Response) => {
     const queryData = getPostPaginationData(req.query)
     const findPosts: PostsType[] = await postsService.findPost(queryData)
@@ -74,12 +73,6 @@ postsRouter.post('/:postId/comments', authTokenMW, commentsContentValidation, in
 catch (error) {
     res.sendStatus(401)
 }
-
-
-    const newComments = await postsService.createCommentsById(req.body.content, req.params.postId, req.user.id, req.user.login)
-    if (newComments) {
-        res.status(201).send(newComments);
-    } else res.sendStatus(404)
 })
 
 
