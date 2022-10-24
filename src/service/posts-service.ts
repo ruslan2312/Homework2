@@ -42,6 +42,7 @@ export const postsService = {
     },
     async createCommentsById(content: string, postId: string, userId: string, login: string): Promise<{ newComment: CommentsType; postId: undefined } | null> {
         const post = await PostsCollection.findOne({id: postId})
+        debugger
         if (post) {
             const newComment = {
                 id: new Date().valueOf().toString(),

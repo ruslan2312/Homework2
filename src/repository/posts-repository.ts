@@ -82,6 +82,7 @@ export const postsRepository = {
         }
     },
     async createCommentsById(newComment: CommentsType): Promise<any> {
+
         await CommentsCollection.insertOne({...newComment});
         return Promise.resolve({...newComment, postId: undefined})
     },
