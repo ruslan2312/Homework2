@@ -74,10 +74,19 @@ postsRouter.post('/:postId/comments', authTokenMW, commentsContentValidation, in
 //     res.sendStatus(401)
 // }
 
-    const newComments = await postsService.createCommentsById(req.body.content, req.params.postId, req.user.id, req.user.login)
-    if (newComments) {
-        res.status(201).send(newComments);
-    } else res.sendStatus(404)
+    const userId = req!.user!.id
+    const login = req!.user!.login;
+    const email = req!.user!.email
+    try {
+        const newComments = await postsService.createCommentsById(req.body.content, req.params.postId, req.user.id, req.user.login)
+        if (newComments) {
+            res.status(201).send(newComments);
+        } else res.sendStatus(404)
+
+    } catch (error) {
+    }
+
+
 })
 
 

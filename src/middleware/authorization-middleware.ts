@@ -7,12 +7,14 @@ export const authTokenMW = async (req: Request, res: Response, next: NextFunctio
         res.send(401)
         return
     }
+    const authType = req.headers.authorization.split(" ")[0]
+    if (authType !== 'Bearer') return res.sendStatus(401)
     const token = req.headers.authorization.split(" ")[1]
     const userId = await jwtService.getUserByIdToken(token)
-    if (userId) {
-        req.user = await usersService.findUserById(userId)
-        next()
-        return
+    const user = await usersService.findUserById(userId)
+    if (user) {
+        req.user = user
+        return next()
     }
     res.send(401)
 }

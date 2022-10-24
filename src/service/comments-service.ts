@@ -17,6 +17,9 @@ export const commentsService = {
     },
     async deleteComment(id: string, idUser:string): Promise<boolean> {
         return await commentsRepository.deleteComment(id,idUser)
+    },
+    async deleteAllComments() {
+        return commentsRepository.deleteAllComments()
     }
 }
 

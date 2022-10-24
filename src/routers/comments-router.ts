@@ -36,10 +36,8 @@ commentsRouter.put('/:commentId', authTokenMW, commentsContentValidation, inputV
         res.sendStatus(404)
         console.log("warning")
     }
-
-
 })
-commentsRouter.delete('/:commentId', authTokenMW, inputValidationMiddleware, async (req: Request, res: Response) => {
+commentsRouter.delete('/:commentId', authTokenMW, async (req: Request, res: Response) => {
     const email = req!.user!.email
     const login = req!.user!.login;
     const userId = req!.user!.id
@@ -55,8 +53,6 @@ commentsRouter.delete('/:commentId', authTokenMW, inputValidationMiddleware, asy
         }
     } catch (e) {
         res.sendStatus(404)
-        console.log("warning")
     }
-
 })
 

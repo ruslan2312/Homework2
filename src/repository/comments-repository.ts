@@ -1,5 +1,5 @@
 import {CommentsType} from "../types/type";
-import {CommentsCollection} from "./db";
+import { CommentsCollection} from "./db";
 
 
 export const comments: CommentsType[] = []
@@ -29,4 +29,7 @@ export const commentsRepository = {
             return result.deletedCount === 1
         } else return false
     },
+    async deleteAllComments() {
+        return CommentsCollection.deleteMany({})
+    }
 }
