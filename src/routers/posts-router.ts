@@ -58,25 +58,12 @@ postsRouter.get('/:postId/comments', async (req: Request, res: Response) => {
     const findCommentsByPostId: CommentsResponseType | null  = await postsService.findCommentsByPostId(queryData, req.params.postId)
     res.status(200).send(findCommentsByPostId)
 })
+
 postsRouter.post('/:postId/comments', authTokenMW, commentsContentValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
-//   try {
-//       const userId = req!.user!.id
-//       const login = req!.user!.login;
-//       const email = req!.user!.email
-//       if (login && userId === req.params.commentId && email ) {
-//           const newComments = await postsService.createCommentsById(req.body.content, req.params.postId, req.user.id, req.user.login)
-//           if (newComments) {
-//               res.status(201).send(newComments);
-//           } else res.sendStatus(404)
-//       }
-//   }
-// catch (error) {
-//     res.sendStatus(401)
-// }
     try {
-        const newComments = await postsService.createCommentsById(req.body.content, req.params.postId, req.user)
-        if (newComments) {
-            res.status(201).send(newComments);
+        const newComment = await postsService.createCommentsByPostId(req.body.content, req.params.postId, req.user)
+        if (newComment) {
+            res.status(201).send(newComment);
         } else res.sendStatus(404)
 
     } catch (error) {

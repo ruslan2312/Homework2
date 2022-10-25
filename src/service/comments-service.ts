@@ -1,22 +1,18 @@
 import {commentsRepository} from "../repository/comments-repository";
-import {CommentsType} from "../types/type";
+import {CommentsResponseType, CommentsType} from "../types/type";
+import {postsService} from "./posts-service";
 
 export const commentsService = {
-    async findCommentsByID(id: string): Promise<CommentsType | null> {
-        return commentsRepository.findCommentsByID(id)
+    async findCommentsByID(id: string): Promise<CommentsResponseType | null> {
+        const comment = await commentsRepository.findCommentsByID(id)
+        if (!comment) return null
+        return postsService.transformDbTypeToResponseTypeForFindOne(comment)
     },
-    // async createComments(id: string, content: string): Promise<CommentsType> {
-    //     const newFeedback = {
-    //         id: id,
-    //         content: content,
-    //     }
-    //     return await commentsRepository.createComments(newFeedback)
-    // },
-    async updateComments(commentId: string, content: string, userId: string): Promise<boolean> {
-        return await commentsRepository.updateComments(commentId, content, userId)
+    async updateComment(commentId: string, content: string, userId: string): Promise<boolean | null> {
+        return commentsRepository.updateComments(commentId, content, userId)
     },
-    async deleteComment(id: string, idUser:string): Promise<boolean> {
-        return await commentsRepository.deleteComment(id,idUser)
+    async deleteComment(id: string, idUser: string): Promise<boolean | null> {
+        return commentsRepository.deleteComment(id, idUser)
     },
     async deleteAllComments() {
         return commentsRepository.deleteAllComments()

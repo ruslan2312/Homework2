@@ -1,5 +1,6 @@
 import {CommentsCollection, PostsCollection} from "./db";
 import {
+    CommentsDbType,
     CommentsPaginationQueryType,
     CommentsType,
     PostPaginationQueryType,
@@ -31,12 +32,7 @@ export const postsRepository = {
         return Promise.resolve({pagesCount, page, pageSize, totalCount, items,})
     },
     async findPostByID(id: string): Promise<PostsType | null> {
-        let post: PostsType | null = await PostsCollection.findOne({id: id}, {projection: {_id: 0}})
-        if (post) {
-            return post
-        } else {
-            return null
-        }
+        return PostsCollection.findOne({id: id}, {projection: {_id: 0}})
     },
     async deletePost(id: string): Promise<boolean> {
         const result = await PostsCollection.deleteOne({id: id})
@@ -86,8 +82,9 @@ export const postsRepository = {
             return null
         }
     },
-    async createCommentsById(newComment: CommentsType): Promise<boolean | null> {
+    async createComment (newComment: CommentsType): Promise<boolean | null> {
         try {
+            // return CommentsCollection.insertOne(newComment);
             const createdComment = await CommentsCollection.insertOne({...newComment});
             if (!createdComment) return null
             return createdComment.acknowledged
