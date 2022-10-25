@@ -6,6 +6,7 @@ import {
     PostPaginationQueryType,
     PostsType
 } from "../types/type";
+import {Filter} from "mongodb";
 
 export const posts: PostsType [] = [];
 
@@ -59,14 +60,8 @@ export const postsRepository = {
     },
     /// COMMENTS ==========================================================================================================
     async findCommentByPostId(queryData: CommentsPaginationQueryType, postId: string): Promise<any> {
-        let post: PostsType | null = await PostsCollection.findOne({id: postId},
-            {projection: {_id: 0}})
-        if (post) {
-            let filter: any = {postId: post.id}
-            const total = await CommentsCollection.find({postId: postId});
-            const totalCount = await total.count().then((total) => {
-                return total
-            });
+            const filter: Filter<CommentsType> = {parentId: postId}
+            const totalCount = await CommentsCollection.countDocuments(filter);
             const pagesCount = Number(Math.ceil(Number(totalCount) / queryData.pageSize))
             const page = Number(queryData.pageNumber)
             const pageSize = Number(queryData.pageSize)
@@ -75,13 +70,8 @@ export const postsRepository = {
                 .skip((page - 1) * pageSize)
                 .limit(pageSize)
                 .toArray()
-            // let commentsPost = await CommentsCollection.find({postId: post.id},
-            //     {projection: {_id: 0, postId: 0}}).toArray()
-            return Promise.resolve({pagesCount, page, pageSize, totalCount, items,})
-        } else {
-            return null
-        }
-    },
+            return Promise.resolve({pagesCount, page, pageSize, totalCount, items,})}
+    ,
     async createComment (newComment: CommentsType): Promise<boolean | null> {
         try {
             // return CommentsCollection.insertOne(newComment);
