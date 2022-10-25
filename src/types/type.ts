@@ -54,6 +54,16 @@ export type UserType = {
     passwordHash: string,
     passwordSalt: string,
 }
+
+export type CommentsResponseType = {
+    id: string,
+    content: string,
+    userId: string,
+    userLogin: string,
+    createdAt: string
+}
+
+
 export type CommentsType = {
     id: string,
     parentId: string //parentId

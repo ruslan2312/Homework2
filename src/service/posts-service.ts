@@ -1,6 +1,24 @@
 import {postsRepository} from "../repository/posts-repository";
 import {BlogsCollection} from "../repository/db";
-import {CommentsPaginationQueryType, CommentsType, PostPaginationQueryType, PostsType, UserType} from "../types/type";
+import {
+    CommentsDbType,
+    CommentsPaginationQueryType,
+    CommentsResponseType,
+    CommentsType,
+    PostPaginationQueryType,
+    PostsType,
+    UserType
+} from "../types/type";
+
+// const transformCommentDbTypeToCommentResponseType = (comment: CommentsType, user: UserType) => {
+//     return {
+//         id: comment.id,
+//         content: comment.content,
+//         userId: user.id,
+//         userLogin: user.login,
+//         createdAt: comment.createdAt
+//     }
+// }
 
 export const postsService = {
     async findPost(query: PostPaginationQueryType): Promise<PostsType[]> {
@@ -35,12 +53,14 @@ export const postsService = {
         return postsRepository.deleteAllPosts()
     },
 /// COMMENTS ==========================================================================================================
+
+
     async findCommentsByPostId(queryData: CommentsPaginationQueryType, postId: string | null): Promise<CommentsType | null> {
         if (postId) {
             return await postsRepository.findCommentByPostId(queryData, postId)
         } else return null
     },
-    async createCommentsById(content: string, postId: string, user: UserType): Promise<CommentsType | null> {
+    async createCommentsById(content: string, postId: string, user: UserType): Promise<CommentsResponseType | null> {
         const post = await postsRepository.findPostByID(postId)
         const id = new Date().valueOf().toString()
         if (post) {
@@ -53,10 +73,20 @@ export const postsService = {
                 createdAt: new Date().toISOString()
             }
             await postsRepository.createCommentsById({...newComment})
-            return newComment
+            return this.transformToResponseType(newComment, user)
         } else return null
 //// Рпи создании Комента мы запихиваем туда PostId и потом ищем по нему же
+    },
+    transformToResponseType(comment: CommentsType, user: UserType) {
+        return {
+            id: comment.id,
+            content: comment.content,
+            userId: user.id,
+            userLogin: user.login,
+            createdAt: comment.createdAt
+        }
     }
+
 }
 
 
