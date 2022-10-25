@@ -55,9 +55,11 @@ export const postsService = {
 /// COMMENTS ==========================================================================================================
 
 
-    async findCommentsByPostId(queryData: CommentsPaginationQueryType, postId: string | null): Promise<CommentsType | null> {
-        if (postId) {
-            return await postsRepository.findCommentByPostId(queryData, postId)
+    async findCommentsByPostId(queryData: CommentsPaginationQueryType, postId: string): Promise<CommentsResponseType | null> {
+        const post = await postsRepository.findPostByID(postId)
+        if (post) {
+            const comment = await postsRepository.findCommentByPostId(queryData, postId)
+            return this.transformDbTypeToResponseTypeForFindOne(comment)
         } else return null
     },
     async createCommentsById(content: string, postId: string, user: UserType): Promise<CommentsResponseType | null> {
@@ -73,11 +75,11 @@ export const postsService = {
                 createdAt: new Date().toISOString()
             }
             await postsRepository.createCommentsById({...newComment})
-            return this.transformToResponseType(newComment, user)
+            return this.transformDbTypeToResponseTypeForCreate(newComment, user)
         } else return null
 //// Рпи создании Комента мы запихиваем туда PostId и потом ищем по нему же
     },
-    transformToResponseType(comment: CommentsType, user: UserType) {
+    transformDbTypeToResponseTypeForCreate(comment: CommentsType, user: UserType) {
         return {
             id: comment.id,
             content: comment.content,
@@ -85,22 +87,15 @@ export const postsService = {
             userLogin: user.login,
             createdAt: comment.createdAt
         }
-    }
+    },
+    transformDbTypeToResponseTypeForFindOne(comment: CommentsType) {
+        return {
+            id: comment.id,
+            content: comment.content,
+            userId: comment.userId,
+            userLogin: comment.userLogin,
+            createdAt: comment.createdAt
+        }
+    },
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

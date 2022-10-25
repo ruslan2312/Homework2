@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {inputValidationMiddleware} from "../middleware/Input-validation-middleware";
 import {mwBasicAuth} from "../middleware/MwBasic";
 import {postsService} from "../service/posts-service";
-import {CommentsType, PostsType} from "../types/type";
+import {CommentsResponseType, CommentsType, PostsType} from "../types/type";
 import {CommentsPaginationData, getPostPaginationData} from "../common/blogPaginationData";
 import {
     titleValidation,
@@ -55,7 +55,7 @@ postsRouter.post('/', mwBasicAuth, titleValidation, shortDescriptionValidation, 
 /// COMMENTS ==========================================================================================================
 postsRouter.get('/:postId/comments', async (req: Request, res: Response) => {
     const queryData = CommentsPaginationData(req.query)
-    const findCommentsByPostId: CommentsType | null | undefined = await postsService.findCommentsByPostId(queryData, req.params.postId)
+    const findCommentsByPostId: CommentsResponseType | null  = await postsService.findCommentsByPostId(queryData, req.params.postId)
     res.status(200).send(findCommentsByPostId)
 })
 postsRouter.post('/:postId/comments', authTokenMW, commentsContentValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
