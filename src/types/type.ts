@@ -66,7 +66,7 @@ export type CommentsResponseType = {
 
 export type CommentsType = {
     id: string,
-    parentId: string //parentId
+    parentId: string
     content: string,
     userId: string,
     userLogin: string,

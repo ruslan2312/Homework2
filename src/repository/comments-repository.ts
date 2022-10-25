@@ -11,7 +11,9 @@ export const commentsRepository = {
     },
     async updateComments(commentId: string, content: string, userId: string): Promise<boolean | null> {
         try {
-            const result = await CommentsCollection.updateOne({commentId, userId}, {$set: {content}})
+            debugger
+            const comment = await CommentsCollection.findOne({id: commentId})
+            const result = await CommentsCollection.updateOne({id: commentId, userId}, {$set: {content}})
             return result.modifiedCount === 1
         } catch (e) {
             return null
