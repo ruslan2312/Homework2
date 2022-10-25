@@ -21,10 +21,7 @@ export const commentsService = {
         debugger
         const post = await postsRepository.findPostByID(postId)
         if (post) {
-            const comment = await commentsRepository.findCommentByPostId(queryData, postId)
-            const result = this.transformDbTypeToResponseTypeForFindOne(comment)
-            console.log(result)
-            return comment
+            return await commentsRepository.findCommentsByPostId(queryData, postId)
         } else return null
     },
     async createCommentsByPostId(content: string, postId: string, user: UserType): Promise<CommentsResponseType | null> {

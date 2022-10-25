@@ -57,7 +57,6 @@ postsRouter.post('/', mwBasicAuth, titleValidation, shortDescriptionValidation, 
 /// COMMENTS ==========================================================================================================
 postsRouter.get('/:postId/comments', async (req: Request, res: Response) => {
     const queryData = CommentsPaginationData(req.query)
-    debugger
     const findCommentsByPostId: CommentsResponseType | null  = await commentsService.findCommentsByPostId(queryData, req.params.postId)
     res.status(200).send(findCommentsByPostId)
 })

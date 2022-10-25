@@ -29,14 +29,14 @@ export const commentsRepository = {
     async deleteAllComments() {
         return CommentsCollection.deleteMany({})
     },
-    async findCommentByPostId(queryData: CommentsPaginationQueryType, postId: string): Promise<any> {
+    async findCommentsByPostId(queryData: CommentsPaginationQueryType, postId: string): Promise<any> {
         const filter: Filter<CommentsType> = {parentId: postId}
         const totalCount = await CommentsCollection.countDocuments(filter);
         const pagesCount = Number(Math.ceil(Number(totalCount) / queryData.pageSize))
         const page = Number(queryData.pageNumber)
         const pageSize = Number(queryData.pageSize)
         const items = await CommentsCollection.find(filter,
-            {projection: {_id: 0, postId: 0}}).sort(queryData.sortBy, queryData.sortDirection)
+            {projection: {_id: 0, parentId: 0}}).sort(queryData.sortBy, queryData.sortDirection)
             .skip((page - 1) * pageSize)
             .limit(pageSize)
             .toArray()
