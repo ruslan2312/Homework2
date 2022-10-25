@@ -56,13 +56,21 @@ postsRouter.post('/', mwBasicAuth, titleValidation, shortDescriptionValidation, 
 
 /// COMMENTS ==========================================================================================================
 postsRouter.get('/:postId/comments', async (req: Request, res: Response) => {
+    const postId = req.params.postId
     const queryData = CommentsPaginationData(req.query)
-    const findCommentsByPostId: CommentsResponseType | null  = await commentsService.findCommentsByPostId(queryData, req.params.postId)
+    const post = await postsService.findPostByID(postId)
+    if (!post) return  res.sendStatus(404)
+    const findCommentsByPostId: CommentsResponseType | null = await commentsService.findCommentsByPostId(queryData, req.params.postId)
     res.status(200).send(findCommentsByPostId)
 })
 postsRouter.post('/:postId/comments', authTokenMW, commentsContentValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
     try {
-        const newComment = await commentsService.createCommentsByPostId(req.body.content, req.params.postId, req.user)
+        const content = req.body.content
+        const postId = req.params.postId
+        const user = req.user
+        const post = postsService.findPostByID(postId)
+        if (!post) return  res.sendStatus(404)
+        const newComment = await commentsService.createCommentsByPostId(content, postId, user)
         if (newComment) {
             res.status(201).send(newComment);
         } else res.sendStatus(404)
