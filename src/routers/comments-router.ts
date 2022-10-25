@@ -1,7 +1,7 @@
 import {Request, Response, Router} from "express";
 import {commentsService} from "../service/comments-service";
 import {authTokenMW} from "../middleware/authorization-middleware";
-import {CommentsResponseType, CommentsType} from "../types/type";
+import {CommentsResponseType} from "../types/type";
 import {commentsContentValidation} from "../common/validator";
 import {inputValidationMiddleware} from "../middleware/Input-validation-middleware";
 
@@ -31,7 +31,7 @@ commentsRouter.delete('/:commentId', authTokenMW, async (req: Request, res: Resp
     const comment = await commentsService.findCommentsByID(commentId)
     if (!comment) return res.sendStatus(404)
     if (comment.userId !== userId) return res.sendStatus(403)
-    await commentsService.deleteComment(commentId, userId)
+    await commentsService.deleteComment(commentId)
     return res.sendStatus(204)
 })
 
