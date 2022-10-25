@@ -16,7 +16,7 @@ import {authTokenMW} from "../middleware/authorization-middleware";
 export const postsRouter = Router()
 postsRouter.get('/', async (req: Request, res: Response) => {
     const queryData = getPostPaginationData(req.query)
-    const findPosts: PostsType[] = await postsService.findPost(queryData)
+    const findPosts: PostsType[] = await postsService.findPosts(queryData)
     res.status(200).send(findPosts)
 })
 postsRouter.get('/:id',

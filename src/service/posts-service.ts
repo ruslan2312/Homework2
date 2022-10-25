@@ -21,7 +21,7 @@ import {
 // }
 
 export const postsService = {
-    async findPost(query: PostPaginationQueryType): Promise<PostsType[]> {
+    async findPosts(query: PostPaginationQueryType): Promise<PostsType[]> {
         return await postsRepository.findPost(query)
     },
     async findPostByID(id: string): Promise<PostsType | null> {

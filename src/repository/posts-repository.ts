@@ -12,20 +12,11 @@ export const posts: PostsType [] = [];
 
 export const postsRepository = {
     async findPost(queryData: PostPaginationQueryType): Promise<any> {
-        let filter: any = {}
-        if (queryData.searchNameTerm) {
-            filter.title = {$regex: queryData.searchNameTerm, $options: 'i'}
-        }
-        const totalCount = await PostsCollection.countDocuments({
-            title: {
-                $regex: queryData.searchNameTerm,
-                $options: 'i'
-            }
-        })
+        const totalCount = await PostsCollection.countDocuments({ })
         const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
         const page = Number(queryData.pageNumber)
         const pageSize = Number(queryData.pageSize)
-        const items = await PostsCollection.find(filter, {projection: {_id: 0}})
+        const items = await PostsCollection.find({},{projection: {_id: 0}})
             .sort(queryData.sortBy, queryData.sortDirection)
             .skip((page - 1) * pageSize)
             .limit(pageSize)
