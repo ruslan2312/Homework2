@@ -22,7 +22,7 @@ import {
 
 export const postsService = {
     async findPost(query: PostPaginationQueryType): Promise<PostsType[]> {
-        return postsRepository.findPost(query)
+        return await postsRepository.findPost(query)
     },
     async findPostByID(id: string): Promise<PostsType | null> {
         return postsRepository.findPostByID(id)
