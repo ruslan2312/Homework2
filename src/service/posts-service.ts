@@ -59,7 +59,9 @@ export const postsService = {
         const post = await postsRepository.findPostByID(postId)
         if (post) {
             const comment = await postsRepository.findCommentByPostId(queryData, postId)
-            return this.transformDbTypeToResponseTypeForFindOne(comment)
+            const result = this.transformDbTypeToResponseTypeForFindOne(comment)
+            console.log(result)
+            return result
         } else return null
     },
     async createCommentsByPostId(content: string, postId: string, user: UserType): Promise<CommentsResponseType | null> {
@@ -75,7 +77,9 @@ export const postsService = {
             createdAt: new Date().toISOString()
         }
         await postsRepository.createComment({...newComment})
-        return this.transformDbTypeToResponseTypeForCreate(newComment, user)
+        const result = this.transformDbTypeToResponseTypeForCreate(newComment, user)
+        console.log(result)
+        return result
 //// Рпи создании Комента мы запихиваем туда PostId и потом ищем по нему же
     },
     transformDbTypeToResponseTypeForCreate(comment: CommentsType, user: UserType) {
