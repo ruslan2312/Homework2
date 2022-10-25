@@ -18,12 +18,13 @@ export const commentsService = {
         return commentsRepository.deleteAllComments()
     },
     async findCommentsByPostId(queryData: CommentsPaginationQueryType, postId: string): Promise<CommentsResponseType | null> {
+        debugger
         const post = await postsRepository.findPostByID(postId)
         if (post) {
             const comment = await commentsRepository.findCommentByPostId(queryData, postId)
             const result = this.transformDbTypeToResponseTypeForFindOne(comment)
             console.log(result)
-            return result
+            return comment
         } else return null
     },
     async createCommentsByPostId(content: string, postId: string, user: UserType): Promise<CommentsResponseType | null> {

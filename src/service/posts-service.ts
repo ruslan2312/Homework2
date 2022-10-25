@@ -4,16 +4,7 @@ import {
     PostPaginationQueryType,
     PostsType,
 } from "../types/type";
-
-// const transformCommentDbTypeToCommentResponseType = (comment: CommentsType, user: UserType) => {
-//     return {
-//         id: comment.id,
-//         content: comment.content,
-//         userId: user.id,
-//         userLogin: user.login,
-//         createdAt: comment.createdAt
-//     }
-// }
+import {blogsService} from "./blogs-service";
 
 export const postsService = {
     async findPosts(query: PostPaginationQueryType): Promise<PostsType[]> {
@@ -29,7 +20,8 @@ export const postsService = {
         return await postsRepository.updatePost(id, title, shortDescription, content, blogId)
     },
     async createPost(title: string, shortDescription: string, content: string, blogId: string): Promise<PostsType | null> {
-        const blogger = await BlogsCollection.findOne({id: blogId})
+        const blogger = await blogsService.findBlogByID(blogId)
+        if (!blogger) return null
         if (blogger) {
             const newPost: PostsType = {
                 id: new Date().valueOf().toString(),
@@ -40,7 +32,9 @@ export const postsService = {
                 blogName: blogger.name,
                 createdAt: new Date().toISOString()
             }
-            return await postsRepository.createPost(newPost)
+            await postsRepository.createPost({...newPost})
+            console.log(newPost)
+            return newPost
         }
         return null
     },

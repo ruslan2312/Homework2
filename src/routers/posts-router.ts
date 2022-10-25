@@ -50,12 +50,14 @@ postsRouter.put('/:id', mwBasicAuth, titleValidation, shortDescriptionValidation
 postsRouter.post('/', mwBasicAuth, titleValidation, shortDescriptionValidation, contentValidation,
     blogIdValidation, blogNameValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
         const newPost = await postsService.createPost(req.body.title, req.body.shortDescription, req.body.content, req.body.blogId)
+        console.log(newPost)
         res.status(201).send(newPost);
     })
 
 /// COMMENTS ==========================================================================================================
 postsRouter.get('/:postId/comments', async (req: Request, res: Response) => {
     const queryData = CommentsPaginationData(req.query)
+    debugger
     const findCommentsByPostId: CommentsResponseType | null  = await commentsService.findCommentsByPostId(queryData, req.params.postId)
     res.status(200).send(findCommentsByPostId)
 })
