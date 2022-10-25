@@ -21,6 +21,8 @@ export const commentsService = {
     async deleteAllComments() {
         return commentsRepository.deleteAllComments()
     }
+
+
 }
 
 

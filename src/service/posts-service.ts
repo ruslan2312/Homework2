@@ -1,6 +1,6 @@
 import {postsRepository} from "../repository/posts-repository";
-import {BlogsCollection, PostsCollection} from "../repository/db";
-import {CommentsPaginationQueryType, CommentsType, PostPaginationQueryType, PostsType} from "../types/type";
+import {BlogsCollection} from "../repository/db";
+import {CommentsPaginationQueryType, CommentsType, PostPaginationQueryType, PostsType, UserType} from "../types/type";
 
 export const postsService = {
     async findPost(query: PostPaginationQueryType): Promise<PostsType[]> {
@@ -40,18 +40,20 @@ export const postsService = {
             return await postsRepository.findCommentByPostId(queryData, postId)
         } else return null
     },
-    async createCommentsById(content: string, postId: string, userId: string, login: string): Promise<{ newComment: CommentsType; postId: undefined } | null> {
-        const post = await PostsCollection.findOne({id: postId})
+    async createCommentsById(content: string, postId: string, user: UserType): Promise<CommentsType | null> {
+        const post = await postsRepository.findPostByID(postId)
+        const id = new Date().valueOf().toString()
         if (post) {
             const newComment = {
-                id: new Date().valueOf().toString(),
+                id,
                 content: content,
-                userId: userId,
-                userLogin: login,
-                postId: postId,
+                userId: user.id,
+                userLogin: user.login,
+                parentId: postId,
                 createdAt: new Date().toISOString()
             }
-            return await postsRepository.createCommentsById(newComment)
+            await postsRepository.createCommentsById({...newComment})
+            return newComment
         } else return null
 //// Рпи создании Комента мы запихиваем туда PostId и потом ищем по нему же
     }

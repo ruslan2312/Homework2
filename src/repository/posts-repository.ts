@@ -1,5 +1,10 @@
 import {CommentsCollection, PostsCollection} from "./db";
-import {CommentsPaginationQueryType, CommentsType, PostPaginationQueryType, PostsType} from "../types/type";
+import {
+    CommentsPaginationQueryType,
+    CommentsType,
+    PostPaginationQueryType,
+    PostsType
+} from "../types/type";
 
 export const posts: PostsType [] = [];
 
@@ -81,10 +86,13 @@ export const postsRepository = {
             return null
         }
     },
-    async createCommentsById(newComment: CommentsType): Promise<any> {
-        await CommentsCollection.insertOne({...newComment});
-        return Promise.resolve({...newComment, postId: undefined})
+    async createCommentsById(newComment: CommentsType): Promise<boolean | null> {
+        try {
+            const createdComment = await CommentsCollection.insertOne({...newComment});
+            if (!createdComment) return null
+            return createdComment.acknowledged
+        } catch (e) {
+            return null
+        }
     },
-
-
 }

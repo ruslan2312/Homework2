@@ -1,3 +1,5 @@
+import {ObjectId} from "mongodb";
+
 export type BlogsType = {
     id: string,
     name: string,
@@ -54,11 +56,23 @@ export type UserType = {
 }
 export type CommentsType = {
     id: string,
+    parentId: string //parentId
     content: string,
-    userId?: string,
-    userLogin?: string,
-    createdAt?: string
+    userId: string,
+    userLogin: string,
+    createdAt: string
 }
+
+export type CommentsDbType = {
+    _id: ObjectId
+    id: string,
+    parentId: string //parentId
+    content: string,
+    userId: string,
+    userLogin: string,
+    createdAt: string
+}
+
 export type  CommentsPaginationQueryType = {
     content?: string
     postId: string,
