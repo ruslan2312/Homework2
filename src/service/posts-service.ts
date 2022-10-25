@@ -1,13 +1,8 @@
 import {postsRepository} from "../repository/posts-repository";
 import {BlogsCollection} from "../repository/db";
 import {
-    CommentsDbType,
-    CommentsPaginationQueryType,
-    CommentsResponseType,
-    CommentsType,
     PostPaginationQueryType,
     PostsType,
-    UserType
 } from "../types/type";
 
 // const transformCommentDbTypeToCommentResponseType = (comment: CommentsType, user: UserType) => {
@@ -51,54 +46,6 @@ export const postsService = {
     },
     async deleteAllPosts(): Promise<boolean> {
         return postsRepository.deleteAllPosts()
-    },
-/// COMMENTS ==========================================================================================================
-
-
-    async findCommentsByPostId(queryData: CommentsPaginationQueryType, postId: string): Promise<CommentsResponseType | null> {
-        const post = await postsRepository.findPostByID(postId)
-        if (post) {
-            const comment = await postsRepository.findCommentByPostId(queryData, postId)
-            const result = this.transformDbTypeToResponseTypeForFindOne(comment)
-            console.log(result)
-            return result
-        } else return null
-    },
-    async createCommentsByPostId(content: string, postId: string, user: UserType): Promise<CommentsResponseType | null> {
-        const post = await postsRepository.findPostByID(postId)
-        if (!post) return null
-        const id = (+new Date()).toString()
-        const newComment = {
-            id,
-            content,
-            userId: user.id,
-            userLogin: user.login,
-            parentId: postId,
-            createdAt: new Date().toISOString()
-        }
-        await postsRepository.createComment({...newComment})
-        const result = this.transformDbTypeToResponseTypeForCreate(newComment, user)
-        console.log(result)
-        return result
-//// Рпи создании Комента мы запихиваем туда PostId и потом ищем по нему же
-    },
-    transformDbTypeToResponseTypeForCreate(comment: CommentsType, user: UserType) {
-        return {
-            id: comment.id,
-            content: comment.content,
-            userId: user.id,
-            userLogin: user.login,
-            createdAt: comment.createdAt
-        }
-    },
-    transformDbTypeToResponseTypeForFindOne(comment: CommentsType) {
-        return {
-            id: comment.id,
-            content: comment.content,
-            userId: comment.userId,
-            userLogin: comment.userLogin,
-            createdAt: comment.createdAt
-        }
     },
 
 }
