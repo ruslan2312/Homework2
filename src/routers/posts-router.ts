@@ -26,15 +26,15 @@ postsRouter.get('/:id',
         if (video) {
             res.status(200).send(video)
         } else {
-            res.send(404)
+            res.sendStatus(404)
         }
     })
 postsRouter.delete('/:id', mwBasicAuth, async (req: Request, res: Response) => {
     const deletePost = await postsService.deletePost(req.params.id)
     if (deletePost) {
-        res.send(204)
+        res.sendStatus(204)
     } else {
-        res.send(404)
+        res.sendStatus(404)
     }
 })
 postsRouter.put('/:id', mwBasicAuth, titleValidation, shortDescriptionValidation, contentValidation,
@@ -44,7 +44,7 @@ postsRouter.put('/:id', mwBasicAuth, titleValidation, shortDescriptionValidation
             const post = await postsService.findPostByID(req.params.id)
             res.status(204).send(post)
         } else {
-            res.send(404)
+            res.sendStatus(404)
         }
     })
 postsRouter.post('/', mwBasicAuth, titleValidation, shortDescriptionValidation, contentValidation,

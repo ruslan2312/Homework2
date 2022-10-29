@@ -7,10 +7,11 @@ import {allDelete} from "./routers/all-delete";
 import {usersRouter} from "./routers/users-router";
 import {authRouter} from "./routers/auth-router";
 import {commentsRouter} from "./routers/comments-router";
+import {emailRouter} from "./routers/email.route";
 
 dotenv.config()
 
-const app = express();
+export const app = express();
 const port = process.env.PORT || 3000
 app.use(express.json())
 app.use('/blogs', blogsRouter)
@@ -18,6 +19,7 @@ app.use('/posts', postsRouter)
 app.use('/users', usersRouter)
 app.use('/auth', authRouter)
 app.use("/comments", commentsRouter)
+app.use('/email', emailRouter)
 app.use('/testing/all-data', allDelete)
 const startApp = async () => {
     await runDb()

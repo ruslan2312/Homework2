@@ -11,5 +11,5 @@ allDelete.delete('/', async (req: Request, res: Response) => {
     await postsService.deleteAllPosts()
     await usersService.deleteAllUsers()
     await commentsService.deleteAllComments()
-    res.send(204)
+    res.sendStatus(204)
 })

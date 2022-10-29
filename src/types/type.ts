@@ -55,6 +55,13 @@ export type UserType = {
     passwordSalt: string,
 }
 
+export type UserResponseType = {
+    id: string,
+    login: string,
+    email: string,
+    createdAt: string,
+}
+
 export type CommentsResponseType = {
     id: string,
     content: string,

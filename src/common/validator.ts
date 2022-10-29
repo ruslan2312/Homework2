@@ -11,9 +11,9 @@ export const nameValidation = body('name').trim().isLength({min: 1, max: 15})
 export const youtubeUrlValidation = body('youtubeUrl').isURL().isLength({min: 1, max: 100})
 
 // Users
-export const usersEmailValidation = body('login').trim().isLength({min: 3, max: 10})
-export const usersPasswordValidation = body('password').trim().isLength({min: 6, max: 20})
-export const usersLoginValidation = body('email').trim().isLength({min: 1, max: 30})
+export const usersLoginValidation = body('login').isString().trim().isLength({min: 3, max: 10})
+export const usersPasswordValidation = body('password').isString().trim().isLength({min: 6, max: 20})
+export const usersEmailValidation = body('email').isString().isEmail().trim().isLength({min: 1, max: 30})
 
 // Comments
 export const commentsContentValidation = body('content').trim().isLength({min: 20, max: 300})

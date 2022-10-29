@@ -12,5 +12,6 @@ export const inputValidationMiddleware = (req: Request, res: Response, next: Nex
         })
         return res.status(400).json({errorsMessages: err})
     }
+
     next()
 }

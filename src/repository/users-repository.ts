@@ -46,7 +46,7 @@ export const usersRepository = {
     },
     async createUser(user: UserType): Promise<any> {
         await UsersCollection.insertOne({...user});
-        return Promise.resolve({...user, passwordHash: undefined, passwordSalt: undefined})
+        return user
     },
     async deleteUser(id: string): Promise<boolean> {
         const result = await UsersCollection.deleteOne({id: id})

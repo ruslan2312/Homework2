@@ -13,7 +13,6 @@ import {
     youtubeUrlValidation
 } from "../common/validator";
 
-
 export const blogsRouter = Router()
 
 blogsRouter.get('/', async (req: Request, res: Response) => {
@@ -27,7 +26,7 @@ blogsRouter.get('/:id',
         if (post) {
             res.status(200).send(post)
         } else {
-            res.send(404)
+            res.sendStatus(404)
         }
     })
 blogsRouter.get('/:blogId/posts',
@@ -37,7 +36,7 @@ blogsRouter.get('/:blogId/posts',
         if (post) {
             res.status(200).send(post)
         } else {
-            res.send(404)
+            res.sendStatus(404)
         }
     })
 blogsRouter.post('/', mwBasicAuth, nameValidation, youtubeUrlValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
@@ -58,15 +57,15 @@ blogsRouter.put('/:id', mwBasicAuth, nameValidation, youtubeUrlValidation, input
         const blog = await blogsService.findBlogByID(req.params.id)
         res.status(204).send(blog)
     } else {
-        res.send(404)
+        res.sendStatus(404)
     }
 })
 blogsRouter.delete('/:id', mwBasicAuth, async (req: Request, res: Response) => {
     const deleteBlog = await blogsService.deleteBlog(req.params.id)
     if (deleteBlog) {
-        res.send(204)
+        res.sendStatus(204)
     } else {
-        res.send(404)
+        res.sendStatus(404)
     }
 })
 
