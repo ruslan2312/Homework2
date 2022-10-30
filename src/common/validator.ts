@@ -25,6 +25,7 @@ export const usersEmailValidation = body('email').isEmail().trim().isLength({min
 })
 export const usersEmailValidationResending= body('email').isEmail().trim().isLength({min: 5, max: 30}).custom(async email => {
     const user = await usersRepository.findByLoginOrEmail(email)
+    if(user?.emailConfirmation.isConfirmed === true) throw new Error()
     if (!user) throw new Error()
     return true
 })

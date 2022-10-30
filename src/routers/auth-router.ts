@@ -9,7 +9,6 @@ import {
 } from "../common/validator";
 import {inputValidationMiddleware} from "../middleware/Input-validation-middleware";
 import {authTokenMW} from "../middleware/authorization-middleware";
-import {emailAdapter} from "../adapter/email-adapter";
 import {authService} from "../service/auth-service";
 
 export const authRouter = Router()
@@ -36,9 +35,10 @@ authRouter.post('/registration', usersLoginValidation, usersPasswordValidation, 
     }
 })
 authRouter.post('/registration-email-resending', usersEmailValidationResending, inputValidationMiddleware,
-    async (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {debugger
         const email = req.body.email
         const resendingEmail = await authService.resentEmail(email)
+        debugger
         if (resendingEmail) {
             res.sendStatus(204)
         } else return res.sendStatus(400)
