@@ -3,7 +3,6 @@ import {UserDbType, UserResponseType, UsersPaginationQueryType} from "../types/t
 import {Filter} from "mongodb";
 import {paginationResult, PaginationResultType} from "../helpers/paginathion";
 
-
 export const usersRepository = {
     async findUsers(queryData: UsersPaginationQueryType): Promise<PaginationResultType> {
         const filter = this._getFilterForQuery(queryData)
