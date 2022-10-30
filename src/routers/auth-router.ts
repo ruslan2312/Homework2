@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {usersService} from "../service/users-service";
 import {jwtService} from "../application/jwt-service";
 import {
-    authLoginValidation, authPasswordValidation, authRegistrationConfirm,
+    authLoginValidation, authPasswordValidation,
     usersEmailValidation,
     usersEmailValidationResending,
     usersLoginValidation,
@@ -46,7 +46,7 @@ authRouter.post('/registration-email-resending', usersEmailValidationResending, 
             res.sendStatus(204)
         } else return res.sendStatus(400)
     })
-authRouter.post('/registration-confirmation', authRegistrationConfirm, inputValidationMiddleware, async (req: Request, res: Response) => {
+authRouter.post('/registration-confirmation', inputValidationMiddleware, async (req: Request, res: Response) => {
     const code = req.body.code
     const registrationConfirm = await authService.registrationConfirm(code)
     if (registrationConfirm) {
