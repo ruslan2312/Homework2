@@ -20,7 +20,10 @@ export const emailAdapter = {
             from: '"RUSEL" <heeca@mail.ru>', // sender address
             to: email, // list of receivers
             subject: subject, // Subject line
-            html: `<a href='https://somesite.com/confirm-email?code=${confirmationCode}'>complete registration</a>`,  // html body
+            html: `<h1>Thank for your registration</h1>
+                        <p>To finish registration please follow the link below:
+                             <a href='https://somesite.com/confirm-email?code=${confirmationCode}'>complete registration</a>
+                        </p>`,  // html body
         });
         return true
     }
