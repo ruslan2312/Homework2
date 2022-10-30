@@ -23,6 +23,10 @@ export const usersEmailValidation = body('email').isEmail().trim().isLength({min
     if (user) throw new Error()
     return true
 })
-
+export const usersEmailValidationResending= body('email').isEmail().trim().isLength({min: 5, max: 30}).custom(async email => {
+    const user = await usersRepository.findByLoginOrEmail(email)
+    if (!user) throw new Error()
+    return true
+})
 // Comments
 export const commentsContentValidation = body('content').trim().isLength({min: 20, max: 300})

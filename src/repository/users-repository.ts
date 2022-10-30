@@ -45,6 +45,9 @@ export const usersRepository = {
         }
         return {}
     },
+    async updateUserConfirmationCodeByEmail(email: string, confirmationCode: string) {
+        await UsersCollection.updateOne({email}, {'emailConfirmation.confirmationCode': confirmationCode})
+    },
 
     async _findUsersByFilters(filter: Filter<UserDbType>, queryData: UsersPaginationQueryType): Promise<PaginationResultType> {
         const totalCount = await UsersCollection.countDocuments(filter)

@@ -1,9 +1,16 @@
 import {Request, Response, Router} from "express";
 import {usersService} from "../service/users-service";
 import {jwtService} from "../application/jwt-service";
-import {usersEmailValidation, usersLoginValidation, usersPasswordValidation} from "../common/validator";
+import {
+    usersEmailValidation,
+    usersEmailValidationResending,
+    usersLoginValidation,
+    usersPasswordValidation
+} from "../common/validator";
 import {inputValidationMiddleware} from "../middleware/Input-validation-middleware";
 import {authTokenMW} from "../middleware/authorization-middleware";
+import {emailAdapter} from "../adapter/email-adapter";
+import {authService} from "../service/auth-service";
 
 export const authRouter = Router()
 // take token Auth
@@ -28,6 +35,12 @@ authRouter.post('/registration', usersLoginValidation, usersPasswordValidation, 
         res.sendStatus(400)
     }
 })
+authRouter.post('/registration-email-resending', usersEmailValidationResending, inputValidationMiddleware,
+    async (req: Request, res: Response) => {
+        const email = req.body.email
+       await authService.resentEmail(email)
+    })
+
 authRouter.get('/me', authTokenMW, async (req: Request, res: Response) => {
     const email = req.user.email
     const login = req.user.login;
