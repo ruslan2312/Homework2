@@ -2,6 +2,7 @@ import {Request, Response, Router} from "express";
 import {usersService} from "../service/users-service";
 import {jwtService} from "../application/jwt-service";
 import {
+    authLoginValidation, authPasswordValidation,
     usersEmailValidation,
     usersEmailValidationResending,
     usersLoginValidation,
@@ -13,8 +14,10 @@ import {authService} from "../service/auth-service";
 
 export const authRouter = Router()
 // take token Auth
-authRouter.post('/login', usersLoginValidation, usersPasswordValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
+authRouter.post('/login', authLoginValidation, authPasswordValidation, inputValidationMiddleware, async (req: Request, res: Response) => {
+    debugger
     const user = await usersService.checkCredentials(req.body.login, req.body.password)
+    debugger
     if (user) {
         const token = await jwtService.createJWT(user)
         res.status(200).send({accessToken: token})
@@ -35,7 +38,7 @@ authRouter.post('/registration', usersLoginValidation, usersPasswordValidation, 
     }
 })
 authRouter.post('/registration-email-resending', usersEmailValidationResending, inputValidationMiddleware,
-    async (req: Request, res: Response) => {debugger
+    async (req: Request, res: Response) => {
         const email = req.body.email
         const resendingEmail = await authService.resentEmail(email)
         debugger
@@ -43,6 +46,13 @@ authRouter.post('/registration-email-resending', usersEmailValidationResending, 
             res.sendStatus(204)
         } else return res.sendStatus(400)
     })
+authRouter.post('/registration-confirmation', inputValidationMiddleware, async (req: Request, res: Response) => {
+    const code = req.body.code
+    const registrationConfirm = await authService.registrationConfirm(code)
+    if (registrationConfirm) {
+        res.sendStatus(204)
+    } else res.sendStatus(400)
+})
 
 authRouter.get('/me', authTokenMW, async (req: Request, res: Response) => {
     const email = req.user.email

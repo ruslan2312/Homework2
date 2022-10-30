@@ -27,6 +27,7 @@ export const usersRepository = {
         const result = await UsersCollection.deleteMany({})
         return result.deletedCount === 1
     },
+
     _getFilterForQuery(queryData: UsersPaginationQueryType): Filter<UserDbType> {
         if (!queryData.searchEmailTerm && queryData.searchLoginTerm) {
             return {login: {$regex: queryData.searchLoginTerm, $options: 'i'}}
@@ -49,7 +50,13 @@ export const usersRepository = {
         const result = await UsersCollection.updateOne({'accountData.email': email}, {$set: {'emailConfirmation.confirmationCode': confirmationCode}})
         return result.matchedCount === 1
     },
-
+    async updateCheckConfirmCode(code: string) {
+        const result = await UsersCollection.updateOne({'emailConfirmation.confirmationCode': code}, {$set: {'emailConfirmation.isConfirmed': true}})
+        return result.matchedCount === 1
+    },
+    async findUserByCode(code: string) {
+        return await UsersCollection.findOne({'emailConfirmation.confirmationCode': code}, {projection: {_id: 0}})
+    },
     async _findUsersByFilters(filter: Filter<UserDbType>, queryData: UsersPaginationQueryType): Promise<PaginationResultType> {
         const totalCount = await UsersCollection.countDocuments(filter)
         const page = Number(queryData.pageNumber)
@@ -77,5 +84,6 @@ export const usersRepository = {
             createdAt: u.accountData.createdAt
         }))
     },
+
 
 }

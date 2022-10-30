@@ -23,11 +23,26 @@ export const usersEmailValidation = body('email').isEmail().trim().isLength({min
     if (user) throw new Error()
     return true
 })
-export const usersEmailValidationResending= body('email').isEmail().trim().isLength({min: 5, max: 30}).custom(async email => {
+export const usersEmailValidationResending = body('email').isEmail().trim().isLength({
+    min: 5,
+    max: 30
+}).custom(async email => {
     const user = await usersRepository.findByLoginOrEmail(email)
-    if(user?.emailConfirmation.isConfirmed === true) throw new Error()
+    if (user?.emailConfirmation.isConfirmed === true) throw new Error()
     if (!user) throw new Error()
     return true
 })
 // Comments
 export const commentsContentValidation = body('content').trim().isLength({min: 20, max: 300})
+
+// Auth
+export const authLoginValidation = body('login').isString().trim().isLength({min: 3, max: 10})
+export const authPasswordValidation = body('password').isString().trim().isLength({min: 6, max: 20})
+export const authRegistrationConfirm = body('code').isString().trim().isLength({
+    min: 5,
+    max: 150
+}).custom(async code => {
+    const user = await usersRepository.findUserByCode(code)
+    if (user?.emailConfirmation.isConfirmed === true) throw new Error
+    return true
+})
