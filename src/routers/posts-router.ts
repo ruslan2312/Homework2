@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {inputValidationMiddleware} from "../middleware/Input-validation-middleware";
 import {mwBasicAuth} from "../middleware/MwBasic";
 import {postsService} from "../service/posts-service";
-import {CommentsResponseType, PostsType} from "../types/type";
+import {CommentsResponseType} from "../types/type";
 import {CommentsPaginationData, getPostPaginationData} from "../common/blogPaginationData";
 import {
     titleValidation,
@@ -17,7 +17,7 @@ import {commentsService} from "../service/comments-service";
 export const postsRouter = Router()
 postsRouter.get('/', async (req: Request, res: Response) => {
     const queryData = getPostPaginationData(req.query)
-    const findPosts: PostsType[] = await postsService.findPosts(queryData)
+    const findPosts = await postsService.findPosts(queryData)
     res.status(200).send(findPosts)
 })
 postsRouter.get('/:id',

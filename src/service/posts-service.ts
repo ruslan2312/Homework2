@@ -1,13 +1,13 @@
 import {postsRepository} from "../repository/posts-repository";
-import {BlogsCollection} from "../repository/db";
 import {
     PostPaginationQueryType,
     PostsType,
 } from "../types/type";
 import {blogsService} from "./blogs-service";
+import {PaginationResultType} from "../helpers/paginathion";
 
 export const postsService = {
-    async findPosts(query: PostPaginationQueryType): Promise<PostsType[]> {
+    async findPosts(query: PostPaginationQueryType): Promise<PaginationResultType> {
         return await postsRepository.findPost(query)
     },
     async findPostByID(id: string): Promise<PostsType | null> {

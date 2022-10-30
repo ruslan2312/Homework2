@@ -3,13 +3,13 @@ import {
     PostPaginationQueryType,
     PostsType
 } from "../types/type";
+import {paginationResult, PaginationResultType} from "../helpers/paginathion";
 
 export const posts: PostsType [] = [];
 
 export const postsRepository = {
-    async findPost(queryData: PostPaginationQueryType): Promise<any> {
+    async findPost(queryData: PostPaginationQueryType): Promise<PaginationResultType> {
         const totalCount = await PostsCollection.countDocuments({})
-        const pagesCount = Number(Math.ceil(totalCount / queryData.pageSize))
         const page = Number(queryData.pageNumber)
         const pageSize = Number(queryData.pageSize)
         const items = await PostsCollection.find({}, {projection: {_id: 0}})
@@ -17,7 +17,7 @@ export const postsRepository = {
             .skip((page - 1) * pageSize)
             .limit(pageSize)
             .toArray()
-        return Promise.resolve({pagesCount, page, pageSize, totalCount, items,})
+        return paginationResult(page, pageSize, totalCount, items)
     },
     async findPostByID(id: string): Promise<PostsType | null> {
         return PostsCollection.findOne({id: id}, {projection: {_id: 0}})

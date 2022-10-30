@@ -55,6 +55,21 @@ export type UserType = {
     passwordSalt: string,
 }
 
+export type UserDbType = {
+    id: string
+    accountData: {
+        login: string,
+        email: string,
+        passwordHash: string,
+        passwordSalt: string,
+        createdAt: string,
+    },
+    emailConfirmation: {
+        confirmationCode: any,
+        expirationData: Date,
+        isConfirmed: boolean,
+    }
+}
 export type UserResponseType = {
     id: string,
     login: string,

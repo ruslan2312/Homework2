@@ -1,4 +1,5 @@
 import {body} from "express-validator";
+import {usersRepository} from "../repository/users-repository";
 //Posts
 export const titleValidation = body('title').trim().isLength({min: 1, max: 30})
 export const shortDescriptionValidation = body('shortDescription').trim().isLength({min: 1, max: 100})
@@ -11,9 +12,17 @@ export const nameValidation = body('name').trim().isLength({min: 1, max: 15})
 export const youtubeUrlValidation = body('youtubeUrl').isURL().isLength({min: 1, max: 100})
 
 // Users
-export const usersLoginValidation = body('login').isString().trim().isLength({min: 3, max: 10})
+export const usersLoginValidation = body('login').isString().trim().isLength({min: 3, max: 10}).custom(async login => {
+    const user = await usersRepository.findByLoginOrEmail(login)
+    if (user) throw new Error()
+    return true
+})
 export const usersPasswordValidation = body('password').isString().trim().isLength({min: 6, max: 20})
-export const usersEmailValidation = body('email').isString().isEmail().trim().isLength({min: 1, max: 30})
+export const usersEmailValidation = body('email').isEmail().trim().isLength({min: 5, max: 30}).custom(async email => {
+    const user = await usersRepository.findByLoginOrEmail(email)
+    if (user) throw new Error()
+    return true
+})
 
 // Comments
 export const commentsContentValidation = body('content').trim().isLength({min: 20, max: 300})
