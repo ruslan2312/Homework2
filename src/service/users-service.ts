@@ -4,6 +4,7 @@ import {usersRepository} from "../repository/users-repository";
 import add from "date-fns/add"
 import {PaginationResultType} from "../helpers/paginathion";
 import {randomUUID} from "crypto";
+import {emailAdapter} from "../adapter/email-adapter";
 
 export const usersService = {
     async findUsers(query: UsersPaginationQueryType): Promise<PaginationResultType> {
@@ -47,6 +48,7 @@ export const usersService = {
             }
         }
         await usersRepository.createUser(newUser)
+        await emailAdapter.sendMail(email, "Registr", newUser.emailConfirmation.confirmationCode )
         return {
             id: newUser.id,
             login: newUser.accountData.login,

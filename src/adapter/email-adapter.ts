@@ -5,8 +5,7 @@ const mailAccount = {
     pass: "Lb9ZFLhPTdGFNxeH2bLE"
 }
 export const emailAdapter = {
-    async sendMail(email: string, subject: string, message: string) {
-
+    async sendMail(email: string, subject: string, confirmationCode: string) {
         const transporter = nodemailer.createTransport({
             host: 'smtp.mail.ru',
             port: 465,
@@ -17,13 +16,12 @@ export const emailAdapter = {
             },
         });
         // send mail with defined transport object
-        let info = await transporter.sendMail({
-            from: '"GOOGLE" <heeca@mail.ru>', // sender address
+        await transporter.sendMail({
+            from: '"RUSEL" <heeca@mail.ru>', // sender address
             to: email, // list of receivers
             subject: subject, // Subject line
-            html: message, // html body
+            html: `<a href='https://somesite.com/confirm-email?code=${confirmationCode}'>complete registration</a>`,  // html body
         });
-
         return true
     }
 }
