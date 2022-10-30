@@ -46,8 +46,7 @@ export const usersRepository = {
         return {}
     },
     async updateUserConfirmationCodeByEmail(email: string, confirmationCode: string) {
-        debugger
-       const result = await UsersCollection.updateOne({'accountData.email': email}, {$set: {'emailConfirmation.confirmationCode': confirmationCode}})
+        const result = await UsersCollection.updateOne({'accountData.email': email}, {$set: {'emailConfirmation.confirmationCode': confirmationCode}})
         return result.matchedCount === 1
     },
 
