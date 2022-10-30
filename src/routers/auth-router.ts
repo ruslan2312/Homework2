@@ -38,8 +38,10 @@ authRouter.post('/registration', usersLoginValidation, usersPasswordValidation, 
 authRouter.post('/registration-email-resending', usersEmailValidationResending, inputValidationMiddleware,
     async (req: Request, res: Response) => {
         const email = req.body.email
-        await authService.resentEmail(email)
-        res.sendStatus(204)
+        const resendingEmail = await authService.resentEmail(email)
+        if (resendingEmail) {
+            res.sendStatus(204)
+        } else return res.sendStatus(400)
     })
 
 authRouter.get('/me', authTokenMW, async (req: Request, res: Response) => {

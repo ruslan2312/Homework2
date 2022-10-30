@@ -5,7 +5,10 @@ import {randomUUID} from "crypto";
 export const authService = {
     async resentEmail(email: string) {
         const newConfirmationCode = randomUUID()
-        await usersRepository.updateUserConfirmationCodeByEmail(email, newConfirmationCode);
-        await emailAdapter.sendMail(email, "Resending", newConfirmationCode)
+        const updateUserConfirmCodeByEmail = await usersRepository.updateUserConfirmationCodeByEmail(email, newConfirmationCode);
+        if (updateUserConfirmCodeByEmail) {
+            await emailAdapter.sendMail(email, "Resending", newConfirmationCode)
+        } else return null
+
     }
 }

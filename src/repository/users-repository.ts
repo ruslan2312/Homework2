@@ -46,7 +46,9 @@ export const usersRepository = {
         return {}
     },
     async updateUserConfirmationCodeByEmail(email: string, confirmationCode: string) {
-        await UsersCollection.updateOne({'accountData.email': email}, {$set: {'emailConfirmation.confirmationCode': confirmationCode}})
+        debugger
+       const result = await UsersCollection.updateOne({'accountData.email': email}, {$set: {'emailConfirmation.confirmationCode': confirmationCode}})
+        return result.matchedCount === 1
     },
 
     async _findUsersByFilters(filter: Filter<UserDbType>, queryData: UsersPaginationQueryType): Promise<PaginationResultType> {
