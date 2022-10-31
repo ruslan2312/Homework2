@@ -38,12 +38,12 @@ export const commentsContentValidation = body('content').trim().isLength({min: 2
 // Auth
 export const authLoginValidation = body('login').isString().trim().isLength({min: 3, max: 10})
 export const authPasswordValidation = body('password').isString().trim().isLength({min: 6, max: 20})
-// export const authRegistrationConfirm = body('code').isString().trim().isLength({
-//     min: 5,
-//     max: 150
-// }).custom(async code => {
-//     const user = await usersRepository.findUserByCode(code)
-//     if (user?.emailConfirmation.confirmationCode !== code) throw new Error
-//     if (user?.emailConfirmation.isConfirmed === true) throw new Error
-//     return true
-// })
+export const authRegistrationConfirm = body('code').isString().trim().isLength({
+    min: 5,
+    max: 150
+}).custom(async code => {
+    const user = await usersRepository.findUserByCode(code)
+    if (user?.emailConfirmation.confirmationCode !== code) throw new Error
+    if (user?.emailConfirmation.isConfirmed === true) throw new Error
+    return true
+})
